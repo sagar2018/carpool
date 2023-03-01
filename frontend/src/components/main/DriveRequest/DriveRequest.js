@@ -38,7 +38,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
     const [rideRouteResp, setRideRouteResp] = useState({ reload: false });
     const [rideTrip, setRideTrip] = useState();
     const [dateTime, setDateTime] = useState(new Date(new Date().getTime() + (60 * 60 * 1000)));
-    const [rider, setRider] = useState([]);
+    const [driver, setDriver] = useState([]);
     const [ride, setRide] = useState([]);
     const [finding, setFinding] = useState(true);
 
@@ -134,7 +134,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
             })
             .then((responseJson) => {
                 console.log(`responseJson`, responseJson);
-                setRider([responseJson.user]);
+                setDriver([responseJson.user]);
             })
             .catch((error) => {
                 console.log(error);
@@ -159,7 +159,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
 
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/drive/requests/", {
+        fetch("http://localhost:8080/api/ride/requests/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -195,14 +195,14 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                             options={options}
                             onLoad={onMapLoad}>
                             {
-                                (ride != null || ride._id != null) && (
+                                (rideRouteResp == null || rideRouteResp.reload) && (
                                     <DirectionsService
                                         // required
                                         options={{
-                                            destination: ride.destination,
-                                            origin: ride.source,
+                                            destination: rideTrip.destination,
+                                            origin: rideTrip.source,
                                             travelMode: 'DRIVING',
-                                            waypoints: ride.waypoints,
+                                            waypoints: rideTrip.waypoints,
                                             optimizeWaypoints: true,
                                         }}
                                         callback={rideDirectionsCallback}
@@ -223,18 +223,18 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                         <Container fluid="lg">
                             <Row style={{ marginTop: '3rem' }}>
                                 <Col>
-                                    <div>Ride requests</div>
+                                    <div>Rides available</div>
                                     {rideRequests.rides.map(ride =>
                                         <Row className='p-2' key={ride._id}>
-                                            <Button variant='outline-primary' onClick={handleRideClick(ride)}>Rider id {ride.rider}</Button>
+                                            <Button variant='outline-primary' onClick={handleRideClick(ride)}>Driver id {ride.driver}</Button>
                                         </Row>
                                     )}
                                 </Col>
                                 <Col md>
-                                    {rider.map(r => {
+                                    {driver.map(r => {
                                         return <Container fluid="lg">
                                             <Row style={{ marginTop: '3rem' }}>
-                                                <div>Rider Name: {r.name}</div>
+                                                <div>Driver Name: {r.name}</div>
                                             </Row>
                                         </Container>
                                     })}

@@ -40,6 +40,8 @@ export default function Ride({ setToken, setActiveTrip }) {
 
     const [srcName, setsrcName] = useState("")
     const [destName, setdestName] = useState("")
+    const [driver, setDriver] = useState([]);
+    const [calculationData, setCalculationData] = useState({});
 
     const mapRef = useRef();
     const onMapLoad = (map) => {
@@ -91,7 +93,6 @@ export default function Ride({ setToken, setActiveTrip }) {
 
     const directionsCallback = (response) => {
         if (response !== null) {
-            console.log(`directionsCallback`, response)
             if (response.status === 'OK')
                 setRouteResp(response)
             else
@@ -100,7 +101,6 @@ export default function Ride({ setToken, setActiveTrip }) {
     }
 
     const rideDirectionsCallback = (response) => {
-        console.log(`rideDirectionsCallback`, response)
         if (response !== null) {
             if (response.status === 'OK')
                 setRideRouteResp({ rideData: response, reload: false })
@@ -123,7 +123,6 @@ export default function Ride({ setToken, setActiveTrip }) {
             completed: false,
             dateTime: dateTime,
         }
-        console.log(data);
         return fetch("http://localhost:8080/api" + '/trips/', {
             method: 'POST',
             headers: {
@@ -141,7 +140,6 @@ export default function Ride({ setToken, setActiveTrip }) {
                 throw new Error(response.statusText);
             })
             .then((responseJson) => {
-                console.log(`responseJson`, responseJson);
                 setTrips(responseJson.trips);
                 setRideTrip(responseJson.trips ? responseJson.trips[0] : {});
                 setFinding(false);
@@ -153,10 +151,66 @@ export default function Ride({ setToken, setActiveTrip }) {
             });
     }
 
+    const updateCalculation = (s1, d1, s2, d2, trip) => {
+        const service = new window.google.maps.DistanceMatrixService();
+        service
+            .getDistanceMatrix({
+                origins: [s1, s2, d2],
+                destinations: [s2, d2, d1],
+                travelMode: "DRIVING",
+            })
+            .then((result) => {
+                if (
+                    result &&
+                    result.rows &&
+                    result.rows.length > 0 &&
+                    result.rows[0].elements &&
+                    result.rows[0].elements.length > 0
+                ) {
+                    var pickUpDuration = result.rows[0].elements[0].duration.value
+                    var destinationDuration = result.rows[0].elements[0].duration.value + result.rows[1].elements[1].duration.value
+                    var date = new Date(trip.dateTime)
+                    var pickUpDateTime = new Date(date.getTime() + pickUpDuration * 1000);
+                    var destinationDateTime = new Date(date.getTime() + destinationDuration * 1000);
+                    var pickUpLocation = result.originAddresses[1]
+                    var dropOffLocation = result.originAddresses[2]
+
+                    setCalculationData({ pickUpDateTime, destinationDateTime, pickUpLocation, dropOffLocation })
+                }
+            })
+            .catch((error) => {
+                console.log("Error calculating distance:", error);
+            });
+    }
+
     const handleRideClick = (trip) => e => {
-        console.log(`clicked`)
         setRideTrip(trip);
         setRideRouteResp({ ...rideRouteResp, reload: true });
+        updateCalculation(trip.source, trip.destination, mapCoords.src, mapCoords.dst, trip)
+        fetch("http://localhost:8080/api" + '/user/details?userId=' + trip.driver, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ' + Cookies.get('tokken'),  //another working solution
+                'Coookie': Cookies.get('tokken')
+            },
+        }).then((response) => {
+            if (response.ok)
+                return response.json();
+            else if (response.status === 401)
+                setToken(null);
+            throw new Error(response.statusText);
+        }).then((responseJson) => {
+            setDriver([responseJson.user]);
+        }).catch((error) => {
+            console.log(error);
+            alert(error);
+            // window.location.reload();
+        });
+    }
+
+    const handleRideRequest = (driver) => {
+
     }
 
     const getWaypoints = (trip) => {
@@ -169,7 +223,6 @@ export default function Ride({ setToken, setActiveTrip }) {
             (mapCoords.dst.lat != trip.destination.lat || mapCoords.dst.lon != trip.destination.lon)) {
             waypoints.push({ location: mapCoords.dst, stopover: true })
         }
-        console.log(`waypoints`, waypoints);
         return waypoints;
     }
 
@@ -316,9 +369,28 @@ export default function Ride({ setToken, setActiveTrip }) {
                                     </Row>
                                     {trips.map(trip =>
                                         <Row fluid className='p-2' key={trip._id}>
-                                            <Button variant='outline-primary' onClick={handleRideClick(trip)}>Driver name {trip.driverDetails.name + " " + trip.driverDetails.lastname}</Button>
+                                            <Button variant='outline-primary' onClick={handleRideClick(trip)}>Car Pool with {trip.driverDetails.name + " " + trip.driverDetails.lastname}</Button>
                                         </Row>
                                     )}
+                                </Col>
+                                <Col md>
+                                    {driver.map(r => {
+                                        return <Container fluid="lg">
+                                            <Row style={{ marginTop: '3rem' }}>
+                                                <div>Driver Name: {r.name}</div>
+                                                {
+                                                    typeof (calculationData) != "undefined" && calculationData != null && calculationData != {} &&
+                                                    (<>
+                                                        <div><b>Pickup Location:</b> {calculationData.pickUpLocation}</div>
+                                                        <div><b>Estimated Pickup Time:</b> {calculationData.pickUpDateTime.toString()}</div>
+                                                        <div><b>Drop off Location:</b> {calculationData.dropOffLocation}</div>
+                                                        <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime.toString()}</div>
+                                                    </>)
+                                                }
+                                                <Button  variant='outline-primary' onClick={handleRideRequest(r)}>Request Ride</Button>
+                                            </Row>
+                                        </Container>
+                                    })}
                                 </Col>
                             </Row>
                         </Container>
