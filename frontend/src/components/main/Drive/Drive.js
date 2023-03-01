@@ -155,7 +155,7 @@ export default function Drive({ setToken, setActiveTrip }) {
                                     <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? srcName : null} />
                                 </Col>
                                 <Col xs="3">
-                                    <Button variant="primary" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
+                                    <Button variant="info" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
                                         Source
                                     </Button>
                                 </Col>
@@ -165,7 +165,7 @@ export default function Drive({ setToken, setActiveTrip }) {
                                     <Form.Control readOnly defaultValue="Destination not selected" value={mapCoords['dst'] ? destName : null} />
                                 </Col>
                                 <Col xs="3">
-                                    <Button variant="primary" onClick={() => openMapModal('dst')} style={{ width: '100%' }} data-test="destination-button">
+                                    <Button variant="info" onClick={() => openMapModal('dst')} style={{ width: '100%' }} data-test="destination-button">
                                         Destination
                                     </Button>
                                 </Col>
@@ -192,14 +192,18 @@ export default function Drive({ setToken, setActiveTrip }) {
                                             <option value="1">One</option>
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
+                                            <option value="4">Four</option>
+                                            <option value="5">Five</option>
+                                            <option value="6">Six</option>
+                                            <option value="7">Seven</option>
                                         </Form.Select>
                                     </FloatingLabel>
                                 </Col>
                             </Row>
                             <Row className='justify-content-center'>
                                 <Col className='col-auto'>
-                                    <Button variant="primary" type="submit" data-test="drive-submit-button" style={{ marginTop: '3rem' }} onClick={handleDriveSubmit}>
-                                        Ready to drive!
+                                    <Button variant="info" type="submit" data-test="drive-submit-button" style={{ marginTop: '3rem' }} onClick={handleDriveSubmit}>
+                                        Schedule drive!
                                     </Button>
                                 </Col>
                             </Row>

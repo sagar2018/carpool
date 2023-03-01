@@ -64,10 +64,10 @@ export default function Navbar({ setToken, activeTrip, name }) {
                             <FaIcons.FaBars onClick={showSidebar} />
                         </Link> : null}
 
-                    <div id='logo' data-test="shareMyGaddi-logo">
+                    <div id='logo' data-test="CarPool-logo">
                         <AiIcons.AiFillCar />
                         <Link to='/' className='menu-bars nav-text'>
-                            ShareMyGaddi
+                            CarPool
                         </Link>
                     </div>
 
@@ -80,12 +80,12 @@ export default function Navbar({ setToken, activeTrip, name }) {
                                 </Button>
                             </Link>
                             <Link to='/drive'>
-                                <Button variant='warning' className={activeTrip ? 'hidden' : 'main-button'} disabled={'/drive' === location.pathname} data-test="drive-button">
+                                <Button variant='light' className={activeTrip ? 'hidden' : 'main-button'} disabled={'/drive' === location.pathname} data-test="drive-button">
                                     <AiIcons.AiTwotoneCar style={{ color: 'black', marginBottom: '0.1rem', marginRight: '0.3rem' }} data-test='drive-icon' /> Drive
                                 </Button>
                             </Link>
                             <Link to='/ride'>
-                                <Button variant='warning' className={activeTrip ? 'hidden' : 'main-button'} disabled={'/ride' === location.pathname} data-test="ride-button">
+                                <Button variant='light' className={activeTrip ? 'hidden' : 'main-button'} disabled={'/ride' === location.pathname} data-test="ride-button">
                                     <MdIcons.MdPeopleOutline style={{ color: 'black', marginRight: '0.3rem' }} data-test='ride-icon' /> Ride
                                 </Button>
                             </Link>
@@ -128,7 +128,7 @@ export default function Navbar({ setToken, activeTrip, name }) {
                                     <span style={{ marginLeft: '1rem' }}>Logout</span>
                                 </Link>
                             </li>
-                            <Button id="deleteProfileButton" variant="danger" data-test="delete-button" onClick={handleDeleteProfile}>Delete Profile</Button>
+                            <Button id="deleteProfileButton" variant="outline-danger" data-test="delete-button" onClick={handleDeleteProfile}>Delete Profile</Button>
                         </ul>
                     </nav> : null}
                 {/* Sidebar end*/}

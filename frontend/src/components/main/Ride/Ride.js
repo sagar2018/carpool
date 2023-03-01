@@ -239,7 +239,7 @@ export default function Ride({ setToken, setActiveTrip }) {
                                         <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? srcName : null} />
                                     </Col>
                                     <Col xs="3">
-                                        <Button variant="primary" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
+                                        <Button variant="info" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
                                             Source
                                         </Button>
                                     </Col>
@@ -249,7 +249,7 @@ export default function Ride({ setToken, setActiveTrip }) {
                                         <Form.Control readOnly defaultValue="Destination not selected" value={mapCoords['dst'] ? destName : null} />
                                     </Col>
                                     <Col xs="3">
-                                        <Button variant="primary" onClick={() => openMapModal('dst')} style={{ width: '100%' }} data-test="destination-button">
+                                        <Button variant="info" onClick={() => openMapModal('dst')} style={{ width: '100%' }} data-test="destination-button">
                                             Destination
                                         </Button>
                                     </Col>
@@ -270,8 +270,8 @@ export default function Ride({ setToken, setActiveTrip }) {
                                 </Row>
                                 <Row className='justify-content-center'>
                                     <Col className='col-auto'>
-                                        <Button variant="primary" type="submit" data-test="ride-submit-button" style={{ marginTop: '3rem' }} onClick={handleRideSubmit}>
-                                            Ready to ride!
+                                        <Button variant="info" type="submit" data-test="ride-submit-button" style={{ marginTop: '3rem' }} onClick={handleRideSubmit}>
+                                            Find rides!
                                         </Button>
                                     </Col>
                                 </Row>
@@ -369,7 +369,7 @@ export default function Ride({ setToken, setActiveTrip }) {
                                     </Row>
                                     {trips.map(trip =>
                                         <Row fluid className='p-2' key={trip._id}>
-                                            <Button variant='outline-primary' onClick={handleRideClick(trip)}>Car Pool with {trip.driverDetails.name + " " + trip.driverDetails.lastname}</Button>
+                                            <Button variant='outline-info' onClick={handleRideClick(trip)}>Car Pool with {trip.driverDetails.name + " " + trip.driverDetails.lastname}</Button>
                                         </Row>
                                     )}
                                 </Col>
@@ -387,7 +387,7 @@ export default function Ride({ setToken, setActiveTrip }) {
                                                         <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime.toString()}</div>
                                                     </>)
                                                 }
-                                                <Button  variant='outline-primary' onClick={handleRideRequest(r)}>Request Ride</Button>
+                                                <Button  variant='outline-info' onClick={handleRideRequest(r)}>Request Ride</Button>
                                             </Row>
                                         </Container>
                                     })}

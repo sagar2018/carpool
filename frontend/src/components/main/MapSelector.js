@@ -117,7 +117,7 @@ export default function MapSelector(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" data-test="close-button" onClick={handleClose}>Close</Button>
-        <Button variant="primary" data-test="map-select" onClick={() => props.handleCallback(false, props.mapType, marker)}>Select</Button>
+        <Button variant="info" data-test="map-select" onClick={() => props.handleCallback(false, props.mapType, marker)}>Select</Button>
       </Modal.Footer>
     </Modal>
   )

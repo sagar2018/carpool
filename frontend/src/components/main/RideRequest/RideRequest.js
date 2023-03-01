@@ -226,7 +226,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                                     <div>Ride requests</div>
                                     {rideRequests.rides.map(ride =>
                                         <Row className='p-2' key={ride._id}>
-                                            <Button variant='outline-primary' onClick={handleRideClick(ride)}>Rider id {ride.rider}</Button>
+                                            <Button variant='outline-info' onClick={handleRideClick(ride)}>Rider id {ride.rider}</Button>
                                         </Row>
                                     )}
                                 </Col>
