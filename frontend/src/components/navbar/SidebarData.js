@@ -8,26 +8,26 @@ export const SidebarData = [
   {
     title: 'Ride Requests',
     path: '/ride-request',
-    icon: <AiIcons.AiOutlineCar />,
+    icon: <AiIcons.AiOutlineCar color='black' />,
   },
   {
     title: 'Drive Requests',
     path: '/drive-request',
-    icon: <AiIcons.AiOutlineCar />,
+    icon: <AiIcons.AiOutlineCar color='black' />,
   },
   {
     title: 'Trip History',
     path: '/trip-history',
-    icon: <BsIcons.BsCardChecklist />,
+    icon: <BsIcons.BsCardChecklist color='black' />,
   },
   {
     title: 'Drive',
     path: '/drive',
-    icon: <AiIcons.AiTwotoneCar />,
+    icon: <AiIcons.AiTwotoneCar color='black' />,
   },
   {
     title: 'Ride',
     path: '/ride',
-    icon: <MdIcons.MdPeopleOutline />,
+    icon: <MdIcons.MdPeopleOutline color='black' />,
   },
 ];

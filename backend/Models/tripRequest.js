@@ -9,16 +9,9 @@ const tripRequestSchema = new schema({
         type: Object,
         required: true,
     },
-    destination: {
-        type: Object,
-        required: true,
-    },
-    waypoints: {
+    pickUpPoints: {
         type: Array,
         required: false,
-    },
-    route: {
-        type: Array
     },
     rider: {
         type: mongoose.ObjectId,
@@ -28,9 +21,9 @@ const tripRequestSchema = new schema({
         type: mongoose.ObjectId,
         require: true,
     },
-    dateTime: {
+    pickUpTime: {
         type: Date,
-        required: true,
+        required: false,
     },
     state: {
         type: String,

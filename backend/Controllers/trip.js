@@ -395,18 +395,15 @@ exports.requestRide = (req, res) => {
         rider: req.auth._id,
         driver: req.body.driver,
         source: req.body.src,
-        destination: req.body.dst,
-        route: req.body.route,
         trip: req.body.trip,
-        dateTime: new Date(req.body.dateTime),
-        waypoints: req.body.waypoints
+        pickUpTime: req.body.pickUpTime ? new Date(req.body.pickUpTime) : null
     });
-    tripRequestObj.save((err, trip) => {
-        if (err) { // TODO: ?Handle error coming due to not selecting all the required fields?
+    tripRequestObj.save((err, tripRequest) => {
+        if (err) {
             console.log(err)
             return res.status(500).end();
         }
-        return res.status(200).json(trip);
+        return res.status(200).json(tripRequest);
     })
 }
 

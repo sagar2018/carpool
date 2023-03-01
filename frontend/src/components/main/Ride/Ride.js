@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import MapSelector from '../MapSelector';
 import { DirectionsRenderer, DirectionsService, GoogleMap } from '@react-google-maps/api';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
+import { Navigate } from 'react-router-dom';
 
 Geocode.setApiKey("AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM");
 
@@ -24,6 +26,7 @@ const center = {
 
 export default function Ride({ setToken, setActiveTrip }) {
 
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [mapType, setMapType] = useState();
     const [modalTitle, setModalTitle] = useState('Title Error');
@@ -37,6 +40,7 @@ export default function Ride({ setToken, setActiveTrip }) {
     const [dateTime, setDateTime] = useState(new Date(new Date().getTime() + (60 * 60 * 1000)));
     const [trips, setTrips] = useState({});
     const [finding, setFinding] = useState(true);
+    const [redirect, setRedirect] = useState(false);
 
     const [srcName, setsrcName] = useState("")
     const [destName, setdestName] = useState("")
@@ -209,8 +213,30 @@ export default function Ride({ setToken, setActiveTrip }) {
         });
     }
 
-    const handleRideRequest = (driver) => {
-
+    const handleRideRequest = (driver) => (e) => {
+        console.log(`handleRequestRide`, driver)
+        fetch("http://localhost:8080/api" + '/trip/request', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ' + Cookies.get('tokken'),  //another working solution
+                'Coookie': Cookies.get('tokken')
+            },
+            body: JSON.stringify({ driver: driver._id, trip: rideTrip._id, src: mapCoords.src, pickUpTime: calculationData.pickUpDateTime })
+        }).then((response) => {
+            if (response.ok)
+                return response.json();
+            else if (response.status === 401)
+                setToken(null);
+            throw new Error(response.statusText);
+        }).then((responseJson) => {
+            alert("You request has been submitted successfully");
+            setRedirect(true);
+        }).catch((error) => {
+            console.log(error);
+            alert(error);
+            // window.location.reload();
+        });
     }
 
     const getWaypoints = (trip) => {
@@ -227,7 +253,7 @@ export default function Ride({ setToken, setActiveTrip }) {
     }
 
     return (
-        <>
+        <> {redirect ? <Navigate to="/ride-request" /> : <></>}
             {finding ? <>
                 {/* <div style={{ width: '100%', height: '100%', textAlign: 'center' }}> */}
                 <Container fluid="lg">
@@ -376,18 +402,17 @@ export default function Ride({ setToken, setActiveTrip }) {
                                 <Col md>
                                     {driver.map(r => {
                                         return <Container fluid="lg">
-                                            <Row style={{ marginTop: '3rem' }}>
-                                                <div>Driver Name: {r.name}</div>
+                                            <Row>
                                                 {
                                                     typeof (calculationData) != "undefined" && calculationData != null && calculationData != {} &&
                                                     (<>
-                                                        <div><b>Pickup Location:</b> {calculationData.pickUpLocation}</div>
-                                                        <div><b>Estimated Pickup Time:</b> {calculationData.pickUpDateTime.toString()}</div>
-                                                        <div><b>Drop off Location:</b> {calculationData.dropOffLocation}</div>
-                                                        <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime.toString()}</div>
+                                                        <div><b>Pickup Location:</b> {calculationData.pickUpLocation || ""}</div>
+                                                        <div><b>Estimated Pickup Time:</b> {calculationData.pickUpDateTime?.toString() || ""}</div>
+                                                        <div><b>Drop off Location:</b> {calculationData.dropOffLocation || ""}</div>
+                                                        <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime?.toString() || ""}</div>
                                                     </>)
                                                 }
-                                                <Button  variant='outline-info' onClick={handleRideRequest(r)}>Request Ride</Button>
+                                                <Button style={{ marginTop: '1rem' }} variant='outline-info' onClick={handleRideRequest(r)}>Request Ride</Button>
                                             </Row>
                                         </Container>
                                     })}
