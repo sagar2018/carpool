@@ -168,7 +168,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                 'Coookie': Cookies.get('tokken')
             },
             body: JSON.stringify({
-                status: "pending"
+                state: "pending"
             }),
         }).then((response) => {
             console.log(`response`, response)

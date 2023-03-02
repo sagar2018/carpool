@@ -147,6 +147,9 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
 
                     var fare = ((originalDistance * baseKmRate) / 1000) + ((oldDuration * baseMinRate) / 60)
                     var addFare = (((newDistance - originalDistance) * baseKmRate) / 1000) + (((newDuration - oldDuration) * baseMinRate) / 60)
+                    if (addFare <= 0) {
+                        addFare = 1
+                    }
                     var newDurationMin = parseInt(newDuration / 60)
                     var newDurationSec = (newDuration % 60).toFixed(0)
                     console.log({ pickUpLocation, dropOffLocation, pickUpLocation, newDistance, newDuration, fare, addFare })
@@ -225,7 +228,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
                 'Coookie': Cookies.get('tokken')
             },
             body: JSON.stringify({
-                status: "pending"
+                state: "pending"
             }),
         }).then((response) => {
             console.log(`response`, response)

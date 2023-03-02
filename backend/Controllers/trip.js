@@ -418,7 +418,7 @@ exports.driveRequests = (req, res) => {
         {
             $match: {
                 "driver": { $elemMatch: { _id: req.auth._id } },
-                "status": req.body.status,
+                "state": req.body.state,
                 "trip.dateTime": { "$gte": new Date().toISOString() }
             },
         }
@@ -429,7 +429,9 @@ exports.driveRequests = (req, res) => {
                     ...request._doc
                 }
 
-                rideRequests.push(requestDto);
+                if (request.state == req.body.state) {
+                    rideRequests.push(requestDto);
+                }
             })
             return res.status(200).json({ rideRequests });
         })
@@ -440,7 +442,7 @@ exports.rideRequests = (req, res) => {
         {
             $match: {
                 "rider": { $elemMatch: { _id: req.auth._id } },
-                "status": req.body.status,
+                "state": req.body.state,
                 "trip.dateTime": { "$gte": new Date().toISOString() }
             },
         }
@@ -452,7 +454,9 @@ exports.rideRequests = (req, res) => {
                     ...request._doc
                 }
 
-                rideRequests.push(requestDto);
+                if (request.state == req.body.state) {
+                    rideRequests.push(requestDto);
+                }
             })
             return res.status(200).json({ rideRequests });
         })
@@ -485,7 +489,7 @@ exports.updateRequest = (req, res) => {
                 //     return res.status(200).json({ msg })
                 // })
             })
-            var msg = (action == "accepted" ) ? "Trip Accepted" : "Trip Rejected"
+            var msg = (action == "accepted") ? "Trip Accepted" : "Trip Rejected"
             return res.status(200).json({ msg })
         })
     })
