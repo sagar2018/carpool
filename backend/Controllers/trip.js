@@ -462,7 +462,7 @@ exports.updateRequest = (req, res) => {
     var action = req.body.action || "accepted"
 
     TripRequest.findById(req.body.tripRequest, (err, tripRequest) => {
-        tripRequest.status = req.body.action
+        tripRequest.state = req.body.action
         tripRequest.save((err, tr) => {
             Trip.findById(req.body.trip, (err, trip) => {
                 // if (trip == null || trip.available_riders <= 0) {
