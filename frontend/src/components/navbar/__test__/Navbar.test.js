@@ -25,8 +25,8 @@ describe("navbar", () => {
         expect(im.length).toBe(1);
      });
 
-     it("render CarPool logo", () => {
-        const im= wrapper.find(`[data-test='CarPool-logo']`);
+     it("render UniGo logo", () => {
+        const im= wrapper.find(`[data-test='UniGo-logo']`);
         expect(im.length).toBe(1);
      });
 

@@ -391,19 +391,25 @@ exports.trips = async (req, res) => {
 }
 
 exports.requestRide = (req, res) => {
-    const tripRequestObj = new TripRequest({
-        rider: req.auth._id,
-        driver: req.body.driver,
-        source: req.body.src,
-        trip: req.body.trip,
-        pickUpTime: req.body.pickUpTime ? new Date(req.body.pickUpTime) : null
-    });
-    tripRequestObj.save((err, tripRequest) => {
-        if (err) {
-            console.log(err)
-            return res.status(500).end();
-        }
-        return res.status(200).json(tripRequest);
+    Trip.findById(req.body.trip, (err, tripData) => {
+        const tripRequestObj = new TripRequest({
+            rider: req.auth._id,
+            driver: req.body.driver,
+            source: tripData.source,
+            destination: tripData.destination,
+            trip: req.body.trip,
+            pickUpPoints: [...tripData.waypoints, req.body.src, req.body.dst],
+            riderName: req.body.riderName,
+            pickUpTime: req.body.pickUpTime ? new Date(req.body.pickUpTime) : null
+        });
+        tripRequestObj.save((err, tripRequest) => {
+            console.log(req.body.riderName)
+            if (err) {
+                console.log(err)
+                return res.status(500).end();
+            }
+            return res.status(200).json(tripRequest);
+        })
     })
 }
 
@@ -419,7 +425,6 @@ exports.driveRequests = (req, res) => {
         , (err, requests) => {
             var rideRequests = [];
             requests.forEach(request => {
-
                 var requestDto = {
                     ...request._doc
                 }
@@ -460,26 +465,28 @@ exports.updateRequest = (req, res) => {
         tripRequest.status = req.body.action
         tripRequest.save((err, tr) => {
             Trip.findById(req.body.trip, (err, trip) => {
-                if (trip == null || trip.available_riders <= 0) {
-                    return res.status(200).json({ "msg": "Trip is filled" })
-                }
-                if (trip.dateTime > new Date()) {
-                    return res.status(200).json({ "msg": "Trip is completed" })
-                }
-                if (action == "accepted") {
-                    trip.riders = [...trip.riders, tripRequest.rider]
-                    trip.waypoints = [tripRequest.source, tripRequest.destination, trip.source, trip.destination]
-                } else {
-                    var index = trip.riders.indexOf(tripRequest.rider)
-                    if (index > -1) {
-                        trip.riders = trip.riders.splice(index, 1)
-                    }
-                }
-                trip.save((err, trip) => {
-                    var msg = (action == "accepted") ? "Trip Accepted successfully" : "Trip Rejected successfully"
-                    return res.status(200).json({ msg })
-                })
+                // if (trip == null || trip.available_riders <= 0) {
+                //     return res.status(200).json({ "msg": "Trip is filled" })
+                // }
+                // if (trip.dateTime > new Date()) {
+                //     return res.status(200).json({ "msg": "Trip is completed" })
+                // }
+                // if (action == "accepted") {
+                //     trip.riders = [...trip.riders, tripRequest.rider]
+                //     trip.waypoints = [tripRequest.source, tripRequest.destination, trip.source, trip.destination]
+                // } else {
+                //     var index = trip.riders.indexOf(tripRequest.rider)
+                //     if (index > -1) {
+                //         trip.riders = trip.riders.splice(index, 1)
+                //     }
+                // }
+                // trip.save((err, trip) => {
+                //     var msg = (action == "accepted") ? "Trip Accepted successfully" : "Trip Rejected successfully"
+                //     return res.status(200).json({ msg })
+                // })
             })
+            var msg = (action == "accepted" ) ? "Trip Accepted" : "Trip Rejected"
+            return res.status(200).json({ msg })
         })
     })
 }

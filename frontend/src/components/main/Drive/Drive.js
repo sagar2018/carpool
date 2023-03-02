@@ -7,6 +7,7 @@ import './Drive.css';
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
+import { Navigate } from 'react-router-dom';
 
 Geocode.setApiKey("AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM");
 
@@ -37,6 +38,7 @@ export default function Drive({ setToken, setActiveTrip }) {
 
     const [srcName, setsrcName] = useState("")
     const [destName, setdestName] = useState("")
+    const [redirect, setRedirect] = useState(false);
 
     const mapRef = useRef();
     const onMapLoad = (map) => {
@@ -128,9 +130,8 @@ export default function Drive({ setToken, setActiveTrip }) {
                 throw new Error(response.statusText);
             })
             .then((responseJson) => {
-                console.log(responseJson);
-                setActiveTrip(responseJson._id);
-                window.location.reload();
+                alert("Your drive is scheduled");
+                setRedirect(true);
             })
             .catch((error) => {
                 console.log(error);
@@ -145,10 +146,12 @@ export default function Drive({ setToken, setActiveTrip }) {
 
     return (
         <>
+            {redirect ? <Navigate to="/ride-request" /> : <></>}
             {/* <div style={{ width: '100%', height: '100%', textAlign: 'center' }}> */}
             <Container fluid="lg">
                 <Row style={{ marginTop: '3rem' }}>
                     <Col md>
+                        <Row style={{ marginTop: '1rem', fontSize: "36px" }} class="col-xs-1" align="center">Schedule Your Ride</Row>
                         <Form>
                             <Form.Group as={Row} className="mb-3" controlId="src">
                                 <Col xs="9">

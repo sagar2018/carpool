@@ -9,6 +9,10 @@ const tripRequestSchema = new schema({
         type: Object,
         required: true,
     },
+    destination: {
+        type: Object,
+        required: true,
+    },
     pickUpPoints: {
         type: Array,
         required: false,
@@ -16,6 +20,10 @@ const tripRequestSchema = new schema({
     rider: {
         type: mongoose.ObjectId,
         require: true,
+    },
+    riderName: {
+        type: String,
+        require: false,
     },
     trip: {
         type: mongoose.ObjectId,

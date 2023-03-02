@@ -7,6 +7,8 @@ import UserDetails from '../UserDetails/UserDetails';
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
+import * as MdIcons from 'react-icons/md';
+import { Link, useLocation } from 'react-router-dom';
 
 Geocode.setApiKey("AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM");
 
@@ -38,7 +40,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
     const [rideRouteResp, setRideRouteResp] = useState({ reload: false });
     const [rideTrip, setRideTrip] = useState();
     const [dateTime, setDateTime] = useState(new Date(new Date().getTime() + (60 * 60 * 1000)));
-    const [rider, setRider] = useState([]);
+    const [driver, setDriver] = useState([]);
     const [ride, setRide] = useState([]);
     const [finding, setFinding] = useState(true);
 
@@ -134,7 +136,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
             })
             .then((responseJson) => {
                 console.log(`responseJson`, responseJson);
-                setRider([responseJson.user]);
+                setDriver([responseJson.user]);
             })
             .catch((error) => {
                 console.log(error);
@@ -159,7 +161,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
 
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/drive/requests/", {
+        fetch("http://localhost:8080/api/ride/requests/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -174,6 +176,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                 return response.json();
             }
         }).then((responseJson) => {
+            console.log(`responseJson`, responseJson)
             setRideRequests({ rides: [...responseJson.rideRequests], loading: false });
         }).catch((error) => {
             console.log(`error`, error);
@@ -223,7 +226,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                         <Container fluid="lg">
                             <Row style={{ marginTop: '3rem' }}>
                                 <Col>
-                                    <div>Ride requests</div>
+                                    <div>Pending Ride Requests</div>
                                     {rideRequests.rides.map(ride =>
                                         <Row className='p-2' key={ride._id}>
                                             <Button variant='outline-info' onClick={handleRideClick(ride)}>Rider id {ride.rider}</Button>
@@ -231,10 +234,10 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                                     )}
                                 </Col>
                                 <Col md>
-                                    {rider.map(r => {
+                                    {driver.map(r => {
                                         return <Container fluid="lg">
                                             <Row style={{ marginTop: '3rem' }}>
-                                                <div>Rider Name: {r.name}</div>
+                                                <div>Driver Name: {r.name}</div>
                                             </Row>
                                         </Container>
                                     })}
@@ -242,7 +245,16 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                             </Row>
                         </Container>
                     </>
-                    : <div>No pending requests.</div>
+                    : <>
+                        <div class="text-center" style={{ fontSize: '24px' }}>No pending requests.</div>
+                        <div class="text-center" style={{ margin: '1rem 0' }}>
+                            <Link to='/ride'>
+                                <Button variant='light-info' className={'main-button'} data-test="drive-button">
+                                    <MdIcons.MdPeopleOutline style={{ color: 'black', marginRight: '0.3rem' }} data-test='ride-icon' /> Find a Ride
+                                </Button>
+                            </Link>
+                        </div>
+                    </>
         }
     </>
 }

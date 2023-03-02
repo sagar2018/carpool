@@ -14,6 +14,7 @@ import { useLoadScript } from '@react-google-maps/api';
 import Drive from './components/main/Drive/Drive';
 import Ride from './components/main/Ride/Ride';
 import RideRequest from './components/main/RideRequest/RideRequest';
+import DriveRequest from './components/main/DriveRequest/DriveRequest'
 import UseActiveTrip from './libraries/UseActiveTrip';
 
 const libraries = ['places'];
@@ -38,8 +39,9 @@ function App() {
         <Route exact path='/login' element={token ? <Navigate to="/" /> : <Login setToken={setToken} setActiveTrip={setActiveTrip} />} />
         <Route exact path='/signup' element={token ? <Navigate to="/" /> : <SignUp setToken={setToken} />} />
         <Route exact path='/drive' element={token ? <Drive setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
-        <Route exact path='/ride' element={token ? <Ride setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
+        <Route exact path='/ride' element={token ? <Ride setToken={setToken} setActiveTrip={setActiveTrip} name={name} /> : <Navigate to="/login" />} />
         <Route exact path='/ride-request' element={token ? <RideRequest setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
+        <Route exact path='/drive-request' element={token ? <DriveRequest setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
         <Route exact path='/trip-history' element={token ? <TripHistory /> : <Navigate to="/login" />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

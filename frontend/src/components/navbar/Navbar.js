@@ -64,28 +64,28 @@ export default function Navbar({ setToken, activeTrip, name }) {
                             <FaIcons.FaBars onClick={showSidebar} color='black' />
                         </Link> : null}
 
-                    <div id='logo' data-test="CarPool-logo">
+                    <div id='logo' data-test="UniGo-logo">
                         <AiIcons.AiFillCar color='black' />
                         <Link to='/' className='menu-bars nav-text'>
-                            CarPool
+                            UniGo
                         </Link>
                     </div>
 
                     {Cookies.get('tokken') ?
                         <div className={'main-buttons'}>
                             {/* <div id='main-buttons'> */}
-                            <Link to='/active-trip'>
+                            {/* <Link to='/active-trip'>
                                 <Button variant='warning' className={activeTrip ? 'main-button' : 'hidden'} disabled={'/active-trip' === location.pathname} data-test="activeTrip-button">
                                     <AiIcons.AiOutlineCar style={{ color: 'black', marginBottom: '0.1rem', marginRight: '0.3rem' }} data-test='activeTrip-icon' /> Active Trip
                                 </Button>
-                            </Link>
+                            </Link> */}
                             <Link to='/drive'>
-                                <Button variant='light' className={activeTrip ? 'hidden' : 'main-button'} disabled={'/drive' === location.pathname} data-test="drive-button">
+                                <Button variant='light' className={'main-button'} disabled={'/drive' === location.pathname} data-test="drive-button">
                                     <AiIcons.AiTwotoneCar style={{ color: 'black', marginBottom: '0.1rem', marginRight: '0.3rem' }} data-test='drive-icon' /> Drive
                                 </Button>
                             </Link>
                             <Link to='/ride'>
-                                <Button variant='light' className={activeTrip ? 'hidden' : 'main-button'} disabled={'/ride' === location.pathname} data-test="ride-button">
+                                <Button variant='light' className={'main-button'} disabled={'/ride' === location.pathname} data-test="ride-button">
                                     <MdIcons.MdPeopleOutline style={{ color: 'black', marginRight: '0.3rem' }} data-test='ride-icon' /> Ride
                                 </Button>
                             </Link>

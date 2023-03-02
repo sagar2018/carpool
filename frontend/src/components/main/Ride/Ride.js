@@ -24,7 +24,7 @@ const center = {
     lng: -80.54225947407059,
 };
 
-export default function Ride({ setToken, setActiveTrip }) {
+export default function Ride({ setToken, setActiveTrip, name }) {
 
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -179,7 +179,8 @@ export default function Ride({ setToken, setActiveTrip }) {
                     var pickUpLocation = result.originAddresses[1]
                     var dropOffLocation = result.originAddresses[2]
 
-                    setCalculationData({ pickUpDateTime, destinationDateTime, pickUpLocation, dropOffLocation })
+                    var distance = result.rows[0].elements[0].duration.value + result.rows[1].elements[1].duration.value
+                    setCalculationData({ pickUpDateTime, destinationDateTime, pickUpLocation, dropOffLocation, distance })
                 }
             })
             .catch((error) => {
@@ -222,7 +223,11 @@ export default function Ride({ setToken, setActiveTrip }) {
                 // 'Authorization': 'Bearer ' + Cookies.get('tokken'),  //another working solution
                 'Coookie': Cookies.get('tokken')
             },
-            body: JSON.stringify({ driver: driver._id, trip: rideTrip._id, src: mapCoords.src, pickUpTime: calculationData.pickUpDateTime })
+            body: JSON.stringify({
+                driver: driver._id, trip: rideTrip._id,
+                src: mapCoords.src, dst: mapCoords.dst, pickUpTime: calculationData.pickUpDateTime,
+                riderName: name
+            })
         }).then((response) => {
             if (response.ok)
                 return response.json();
@@ -253,55 +258,59 @@ export default function Ride({ setToken, setActiveTrip }) {
     }
 
     return (
-        <> {redirect ? <Navigate to="/ride-request" /> : <></>}
+        <>
+            {redirect ? <Navigate to="/ride-request" /> : <></>}
             {finding ? <>
                 {/* <div style={{ width: '100%', height: '100%', textAlign: 'center' }}> */}
                 <Container fluid="lg">
                     <Row style={{ marginTop: '3rem' }}>
                         <Col md>
-                            <Form>
-                                <Form.Group as={Row} className="mb-3" controlId="src">
-                                    <Col xs="9">
-                                        <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? srcName : null} />
-                                    </Col>
-                                    <Col xs="3">
-                                        <Button variant="info" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
-                                            Source
-                                        </Button>
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3" controlId="dst">
-                                    <Col xs="9">
-                                        <Form.Control readOnly defaultValue="Destination not selected" value={mapCoords['dst'] ? destName : null} />
-                                    </Col>
-                                    <Col xs="3">
-                                        <Button variant="info" onClick={() => openMapModal('dst')} style={{ width: '100%' }} data-test="destination-button">
-                                            Destination
-                                        </Button>
-                                    </Col>
-                                </Form.Group>
-                                <Row style={{ marginTop: '1rem' }}>
-                                    <Col xs="6" sm="3" md="4">
-                                        <label>Date-Time of trip: </label>
-                                    </Col>
-                                    <Col xs="6">
-                                        <DatePicker
-                                            showTimeSelect
-                                            selected={dateTime}
-                                            minDate={new Date()}
-                                            closeOnScroll={true}
-                                            onChange={(date) => setDateTime(date)}
-                                            dateFormat="MMMM d @ h:mm aa" />
-                                    </Col>
-                                </Row>
-                                <Row className='justify-content-center'>
-                                    <Col className='col-auto'>
-                                        <Button variant="info" type="submit" data-test="ride-submit-button" style={{ marginTop: '3rem' }} onClick={handleRideSubmit}>
-                                            Find rides!
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Form>
+                            <Row style={{ marginTop: '1rem', fontSize: "36px" }} class="col-xs-1" align="center">Find a Ride</Row>
+                            <Row>
+                                <Form>
+                                    <Form.Group as={Row} className="mb-3" controlId="src">
+                                        <Col xs="9">
+                                            <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? srcName : null} />
+                                        </Col>
+                                        <Col xs="3">
+                                            <Button variant="info" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
+                                                Source
+                                            </Button>
+                                        </Col>
+                                    </Form.Group>
+                                    <Form.Group as={Row} className="mb-3" controlId="dst">
+                                        <Col xs="9">
+                                            <Form.Control readOnly defaultValue="Destination not selected" value={mapCoords['dst'] ? destName : null} />
+                                        </Col>
+                                        <Col xs="3">
+                                            <Button variant="info" onClick={() => openMapModal('dst')} style={{ width: '100%' }} data-test="destination-button">
+                                                Destination
+                                            </Button>
+                                        </Col>
+                                    </Form.Group>
+                                    <Row style={{ marginTop: '1rem' }}>
+                                        <Col xs="6" sm="3" md="4">
+                                            <label>Date-Time of trip: </label>
+                                        </Col>
+                                        <Col xs="6">
+                                            <DatePicker
+                                                showTimeSelect
+                                                selected={dateTime}
+                                                minDate={new Date()}
+                                                closeOnScroll={true}
+                                                onChange={(date) => setDateTime(date)}
+                                                dateFormat="MMMM d @ h:mm aa" />
+                                        </Col>
+                                    </Row>
+                                    <Row className='justify-content-center'>
+                                        <Col className='col-auto'>
+                                            <Button variant="info" type="submit" data-test="ride-submit-button" style={{ marginTop: '3rem' }} onClick={handleRideSubmit}>
+                                                Find rides!
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            </Row>
                         </Col>
                         <Col md style={{ marginTop: '2rem' }}>
                             <GoogleMap
@@ -410,6 +419,7 @@ export default function Ride({ setToken, setActiveTrip }) {
                                                         <div><b>Estimated Pickup Time:</b> {calculationData.pickUpDateTime?.toString() || ""}</div>
                                                         <div><b>Drop off Location:</b> {calculationData.dropOffLocation || ""}</div>
                                                         <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime?.toString() || ""}</div>
+                                                        <div><b>Your Travelling Distance:</b> {(calculationData.distance / 1609) + " miles" || ""}</div>
                                                     </>)
                                                 }
                                                 <Button style={{ marginTop: '1rem' }} variant='outline-info' onClick={handleRideRequest(r)}>Request Ride</Button>

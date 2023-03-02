@@ -20,14 +20,4 @@ export const SidebarData = [
     path: '/trip-history',
     icon: <BsIcons.BsCardChecklist color='black' />,
   },
-  {
-    title: 'Drive',
-    path: '/drive',
-    icon: <AiIcons.AiTwotoneCar color='black' />,
-  },
-  {
-    title: 'Ride',
-    path: '/ride',
-    icon: <MdIcons.MdPeopleOutline color='black' />,
-  },
 ];
