@@ -127,7 +127,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
             completed: false,
             dateTime: dateTime,
         }
-        return fetch("http://localhost:8080/api" + '/trips/', {
+        return fetch("http://18.224.165.108:8080/api" + '/trips/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
         setRideTrip(trip);
         setRideRouteResp({ ...rideRouteResp, reload: true });
         updateCalculation(trip.source, trip.destination, mapCoords.src, mapCoords.dst, trip)
-        fetch("http://localhost:8080/api" + '/user/details?userId=' + trip.driver, {
+        fetch("http://18.224.165.108:8080/api" + '/user/details?userId=' + trip.driver, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -216,7 +216,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
 
     const handleRideRequest = (driver) => (e) => {
         console.log(`handleRequestRide`, driver)
-        fetch("http://localhost:8080/api" + '/trip/request', {
+        fetch("http://18.224.165.108:8080/api" + '/trip/request', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

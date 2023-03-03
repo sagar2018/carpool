@@ -10,7 +10,7 @@ export default function Login({ setToken, setActiveTrip }) {
     const [password, setPassword] = useState("");
 
     function loginUser(credentials) {
-        return fetch("http://localhost:8080/api" + '/signin', {
+        return fetch("http://18.224.165.108:8080/api" + '/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

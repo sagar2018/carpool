@@ -16,7 +16,7 @@ export default function Navbar({ setToken, activeTrip, name }) {
     const showSidebar = () => setSidebar(!sidebar);
 
     function logoutUser() {
-        return fetch("http://localhost:8080/api" + '/signout', {
+        return fetch("http://18.224.165.108:8080/api" + '/signout', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default function Navbar({ setToken, activeTrip, name }) {
     }
 
     function deleteUser() {
-        return fetch("http://localhost:8080/api" + '/delete', {
+        return fetch("http://18.224.165.108:8080/api" + '/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

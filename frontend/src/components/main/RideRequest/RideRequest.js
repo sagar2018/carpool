@@ -119,7 +119,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
 
     const handleRideClick = (ride) => e => {
         setRide(ride)
-        fetch("http://localhost:8080/api" + '/user/details?userId=' + ride.rider, {
+        fetch("http://18.224.165.108:8080/api" + '/user/details?userId=' + ride.rider, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -161,7 +161,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
 
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/ride/requests/", {
+        fetch("http://18.224.165.108:8080/api/ride/requests/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
