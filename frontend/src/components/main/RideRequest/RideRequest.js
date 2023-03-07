@@ -1,19 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
-import MapSelector from '../MapSelector';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { DirectionsRenderer, DirectionsService, GoogleMap } from '@react-google-maps/api';
-import DatePicker from "react-datepicker";
-import UserDetails from '../UserDetails/UserDetails';
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
 import * as MdIcons from 'react-icons/md';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 Geocode.setApiKey("AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM");
 
 const mapContainerStyle = {
-    height: "60vh",
+    height: "45vh",
     width: "100%",
 };
 const options = {
@@ -21,8 +18,8 @@ const options = {
     zoomControl: true,
 };
 const center = {
-    lat: 43.473078230478336,
-    lng: -80.54225947407059,
+    lat: 50.44522126067261,
+    lng: -104.61894259252107,
 };
 
 
@@ -56,7 +53,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
 
     const openMapModal = (mapType) => {
         setMapType(mapType);
-        setModalTitle(mapType === 'src' ? 'Source point' : 'Destination point');
+        setModalTitle(mapType === 'src' ? 'Start' : 'Destination');
         setShowModal(true);
     }
 

@@ -6,7 +6,6 @@ import * as MdIcons from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 import { IconContext } from 'react-icons';
 import { Button } from 'react-bootstrap';
-import defaultImg from '../../logo.svg';
 import './Navbar.css';
 import { SidebarData } from './SidebarData';
 
@@ -65,7 +64,7 @@ export default function Navbar({ setToken, activeTrip, name }) {
                         </Link> : null}
 
                     <div id='logo' data-test="UniGo-logo">
-                        <AiIcons.AiFillCar color='black' />
+                        <img style={{ height: "36px", width: "auto" }} color='black' src={require('../../logo192.png')} />
                         <Link to='/' className='menu-bars nav-text'>
                             UniGo
                         </Link>
@@ -81,12 +80,12 @@ export default function Navbar({ setToken, activeTrip, name }) {
                             </Link> */}
                             <Link to='/drive'>
                                 <Button variant='light' className={'main-button'} disabled={'/drive' === location.pathname} data-test="drive-button">
-                                    <AiIcons.AiTwotoneCar style={{ color: 'black', marginBottom: '0.1rem', marginRight: '0.3rem' }} data-test='drive-icon' /> Drive
+                                    <AiIcons.AiTwotoneCar style={{ color: 'black', marginBottom: '0.1rem' }} data-test='drive-icon' />
                                 </Button>
                             </Link>
                             <Link to='/ride'>
                                 <Button variant='light' className={'main-button'} disabled={'/ride' === location.pathname} data-test="ride-button">
-                                    <MdIcons.MdPeopleOutline style={{ color: 'black', marginRight: '0.3rem' }} data-test='ride-icon' /> Ride
+                                    <MdIcons.MdPeopleOutline style={{ color: 'black' }} data-test='ride-icon' />
                                 </Button>
                             </Link>
                         </div> : null}
@@ -102,12 +101,11 @@ export default function Navbar({ setToken, activeTrip, name }) {
                                     <AiIcons.AiOutlineClose color='black' />
                                 </Link>
                             </li>
-                            <li>
-                                {/* <img src={props.user.img} alt={props.user.name} /> */}
-                                <img src={defaultImg} alt='Name' data-test="name-image" />
-                            </li>
-                            <li style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-                                <div style={{ color: 'black' }}>{name}</div>
+                            <li className='nav-text'>
+                                <Link to="/profile" >
+                                    <MdIcons.MdPerson color='black' />
+                                    <span style={{ marginLeft: '1rem' }}>{name}</span>
+                                </Link>
                             </li>
                             {SidebarData.map((item, index) => {
                                 if ((activeTrip && item.title !== 'Drive' && item.title !== 'Ride') || (!activeTrip && item.title !== 'Active Trip'))
@@ -119,12 +117,13 @@ export default function Navbar({ setToken, activeTrip, name }) {
                                             </Link>
                                         </li>
                                     );
+                                return <></>
                             })}
                         </ul>
                         <ul className='sidebar-bottom-items' onClick={showSidebar}>
                             <li className='nav-text' data-test="logout-button">
                                 <Link to='/' onClick={handleLogOut} > {/*call logout method*/}
-                                    <FaIcons.FaSignOutAlt color='black'/>
+                                    <FaIcons.FaSignOutAlt color='black' />
                                     <span style={{ marginLeft: '1rem' }}>Logout</span>
                                 </Link>
                             </li>

@@ -8,7 +8,7 @@ export const SidebarData = [
   {
     title: 'Ride Requests',
     path: '/ride-request',
-    icon: <AiIcons.AiOutlineCar color='black' />,
+    icon: <MdIcons.MdPeopleOutline color='black' />,
   },
   {
     title: 'Drive Requests',

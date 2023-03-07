@@ -12,7 +12,7 @@ import { Navigate } from 'react-router-dom';
 Geocode.setApiKey("AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM");
 
 const mapContainerStyle = {
-    height: "60vh",
+    height: "45vh",
     width: "100%",
 };
 const options = {
@@ -20,8 +20,8 @@ const options = {
     zoomControl: true,
 };
 const center = {
-    lat: 43.473078230478336,
-    lng: -80.54225947407059,
+    lat: 50.44522126067261,
+    lng: -104.61894259252107,
 };
 
 export default function Ride({ setToken, setActiveTrip, name }) {
@@ -54,7 +54,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
 
     const openMapModal = (mapType) => {
         setMapType(mapType);
-        setModalTitle(mapType === 'src' ? 'Source point' : 'Destination point');
+        setModalTitle(mapType === 'src' ? 'Start' : 'Destination');
         setShowModal(true);
     }
 
@@ -226,7 +226,8 @@ export default function Ride({ setToken, setActiveTrip, name }) {
             body: JSON.stringify({
                 driver: driver._id, trip: rideTrip._id,
                 src: mapCoords.src, dst: mapCoords.dst, pickUpTime: calculationData.pickUpDateTime,
-                riderName: name
+                riderName: name,
+                driverName: driver.name
             })
         }).then((response) => {
             if (response.ok)
@@ -270,11 +271,11 @@ export default function Ride({ setToken, setActiveTrip, name }) {
                                 <Form>
                                     <Form.Group as={Row} className="mb-3" controlId="src">
                                         <Col xs="9">
-                                            <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? srcName : null} />
+                                            <Form.Control readOnly defaultValue="Starting position not selected" value={mapCoords['src'] ? srcName : null} />
                                         </Col>
                                         <Col xs="3">
                                             <Button variant="info" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
-                                                Source
+                                                Start
                                             </Button>
                                         </Col>
                                     </Form.Group>
@@ -363,39 +364,6 @@ export default function Ride({ setToken, setActiveTrip, name }) {
             </>
                 : trips && trips !== "null" && trips !== "undefined" ?
                     <>
-                        <GoogleMap
-                            mapContainerStyle={mapContainerStyle}
-                            zoom={15}
-                            center={center}
-                            options={options}
-                            onLoad={onMapLoad}>
-                            {
-                                (rideRouteResp == null || rideRouteResp.reload) && (
-                                    <DirectionsService
-                                        // required
-                                        options={{
-                                            destination: rideTrip.destination,
-                                            origin: rideTrip.source,
-                                            travelMode: 'DRIVING',
-                                            waypoints: getWaypoints(rideTrip),
-                                            optimizeWaypoints: true,
-                                        }}
-                                        callback={rideDirectionsCallback}
-                                    />
-                                )
-                            }
-                            {
-                                (rideRouteResp !== null && !rideRouteResp.reload) && (
-                                    <DirectionsRenderer
-                                        // required
-                                        options={{
-                                            directions: rideRouteResp.rideData
-                                        }}
-                                    />
-                                )
-                            }
-                        </GoogleMap>
-
                         <Container fluid="lg">
                             <Row style={{ marginTop: '3rem' }}>
                                 <Col md>
@@ -408,24 +376,58 @@ export default function Ride({ setToken, setActiveTrip, name }) {
                                         </Row>
                                     )}
                                 </Col>
-                                <Col md>
-                                    {driver.map(r => {
-                                        return <Container fluid="lg">
-                                            <Row>
-                                                {
-                                                    typeof (calculationData) != "undefined" && calculationData != null && calculationData != {} &&
-                                                    (<>
-                                                        <div><b>Pickup Location:</b> {calculationData.pickUpLocation || ""}</div>
-                                                        <div><b>Estimated Pickup Time:</b> {calculationData.pickUpDateTime?.toString() || ""}</div>
-                                                        <div><b>Drop off Location:</b> {calculationData.dropOffLocation || ""}</div>
-                                                        <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime?.toString() || ""}</div>
-                                                        <div><b>Your Travelling Distance:</b> {(calculationData.distance / 1609) + " miles" || ""}</div>
-                                                    </>)
-                                                }
-                                                <Button style={{ marginTop: '1rem' }} variant='outline-info' onClick={handleRideRequest(r)}>Request Ride</Button>
-                                            </Row>
-                                        </Container>
-                                    })}
+                                <Col md style={{ marginTop: '2rem' }}>
+                                    <Row>
+                                        <GoogleMap
+                                            mapContainerStyle={mapContainerStyle}
+                                            zoom={15}
+                                            center={center}
+                                            options={options}
+                                            onLoad={onMapLoad}>
+                                            {
+                                                (rideRouteResp == null || rideRouteResp.reload) && (
+                                                    <DirectionsService
+                                                        // required
+                                                        options={{
+                                                            destination: rideTrip.destination,
+                                                            origin: rideTrip.source,
+                                                            travelMode: 'DRIVING',
+                                                            waypoints: getWaypoints(rideTrip),
+                                                            optimizeWaypoints: true,
+                                                        }}
+                                                        callback={rideDirectionsCallback}
+                                                    />
+                                                )
+                                            }
+                                            {
+                                                (rideRouteResp !== null && !rideRouteResp.reload) && (
+                                                    <DirectionsRenderer
+                                                        // required
+                                                        options={{
+                                                            directions: rideRouteResp.rideData
+                                                        }}
+                                                    />
+                                                )
+                                            }
+                                        </GoogleMap>
+                                        {driver.map(r => {
+                                            return <Container fluid="lg">
+                                                <Row>
+                                                    {
+                                                        typeof (calculationData) != "undefined" && calculationData != null && calculationData != {} &&
+                                                        (<>
+                                                            <div><b>Pickup Location:</b> {calculationData.pickUpLocation || ""}</div>
+                                                            <div><b>Estimated Pickup Time:</b> {calculationData.pickUpDateTime?.toString() || ""}</div>
+                                                            <div><b>Drop off Location:</b> {calculationData.dropOffLocation || ""}</div>
+                                                            <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime?.toString() || ""}</div>
+                                                            <div><b>Your Travelling Distance:</b> {(calculationData.distance / 1609) + " miles" || ""}</div>
+                                                        </>)
+                                                    }
+                                                    <Button style={{ marginTop: '1rem' }} variant='outline-info' onClick={handleRideRequest(r)}>Request Ride</Button>
+                                                </Row>
+                                            </Container>
+                                        })}
+                                    </Row>
                                 </Col>
                             </Row>
                         </Container>

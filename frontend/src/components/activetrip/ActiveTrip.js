@@ -17,8 +17,8 @@ const options = {
     zoomControl: true,
 };
 const center = {
-    lat: 43.473078230478336,
-    lng: -80.54225947407059,
+    lat: 50.44522126067261,
+    lng: -104.61894259252107,
 };
 export default function ActiveTrip({ setActiveTrip }) {
     // For Map
@@ -241,7 +241,7 @@ export default function ActiveTrip({ setActiveTrip }) {
                     <Col md="10">
                         <h1>Active Trip Details</h1>
                         <Row>
-                            <h3 style={{ marginTop: '1rem' }}><span className='trip-attributes'>Source</span>: {source}</h3>
+                            <h3 style={{ marginTop: '1rem' }}><span className='trip-attributes'>Start</span>: {source}</h3>
                             <h3><span className='trip-attributes'>Destination</span>: {destination}</h3>
                             <h3><span className='trip-attributes'>Date</span>: {datetime}</h3>
                             <h3 style={{ marginTop: '1rem' }}><span className='trip-attributes'>Driver</span>: {driver}</h3>

@@ -1,19 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
-import MapSelector from '../MapSelector';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { DirectionsRenderer, DirectionsService, GoogleMap } from '@react-google-maps/api';
-import DatePicker from "react-datepicker";
-import UserDetails from '../UserDetails/UserDetails';
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as AiIcons from 'react-icons/ai';
 
 Geocode.setApiKey("AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM");
 
 const mapContainerStyle = {
-    height: "60vh",
+    height: "45vh",
     width: "100%",
 };
 const options = {
@@ -21,8 +18,8 @@ const options = {
     zoomControl: true,
 };
 const center = {
-    lat: 43.473078230478336,
-    lng: -80.54225947407059,
+    lat: 50.44522126067261,
+    lng: -104.61894259252107,
 };
 
 const baseKmRate = 1;
@@ -61,7 +58,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
 
     const openMapModal = (mapType) => {
         setMapType(mapType);
-        setModalTitle(mapType === 'src' ? 'Source point' : 'Destination point');
+        setModalTitle(mapType === 'src' ? 'Start' : 'Destination');
         setShowModal(true);
     }
 
@@ -196,7 +193,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
                 // 'Authorization': 'Bearer ' + Cookies.get('tokken'),  //another working solution
                 'Coookie': Cookies.get('tokken')
             },
-            body: JSON.stringify({action, tripRequest: rideTrip._id})
+            body: JSON.stringify({ action, tripRequest: rideTrip._id })
         }).then((response) => {
             if (response.ok)
                 return response.json();
@@ -250,38 +247,6 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
                 :
                 rideRequests != null && rideRequests.rides.length > 0
                     ? <>
-                        <GoogleMap
-                            mapContainerStyle={mapContainerStyle}
-                            zoom={15}
-                            center={center}
-                            options={options}
-                            onLoad={onMapLoad}>
-                            {
-                                (rideRouteResp == null || rideRouteResp.reload) && (
-                                    <DirectionsService
-                                        // required
-                                        options={{
-                                            destination: rideTrip.destination,
-                                            origin: rideTrip.source,
-                                            travelMode: 'DRIVING',
-                                            waypoints: getWaypoints(rideTrip),
-                                            optimizeWaypoints: true,
-                                        }}
-                                        callback={rideDirectionsCallback}
-                                    />
-                                )
-                            }
-                            {
-                                (rideRouteResp !== null && !rideRouteResp.reload) && (
-                                    <DirectionsRenderer
-                                        // required
-                                        options={{
-                                            directions: rideRouteResp.rideData
-                                        }}
-                                    />
-                                )
-                            }
-                        </GoogleMap>
                         <Container fluid="lg">
                             <Row style={{ marginTop: '3rem' }}>
                                 <Col>
@@ -292,28 +257,64 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
                                         </Row>
                                     )}
                                 </Col>
-                                <Col md>
-                                    {rider.map(r => {
-                                        return <Container fluid="lg">
-                                            <Row>
-                                                {
-                                                    typeof (calculationData) != "undefined" && calculationData != null && calculationData != {} &&
-                                                    (<>
-                                                        <div><b>Pickup Location:</b> {calculationData.pickUpLocation || ""}</div>
-                                                        <div><b>Drop off Location:</b> {calculationData.dropOffLocation || ""}</div>
-                                                        <div><b>Total Ride Distance:</b> {calculationData ? (calculationData.newDistance / 1000).toFixed(3) + " km" || "" : ""}</div>
-                                                        <div><b>Total Ride Duration:</b> {calculationData.newDuration ? (calculationData.newDurationMin + " minutes " + calculationData.newDurationSec + " seconds" || "") : ""}</div>
-                                                        <div><b>Base Fare:</b> {"$" + calculationData.fare?.toFixed(2) || ""}</div>
-                                                        <div><b>Additional Fare:</b> {"$" + calculationData.addFare?.toFixed(2) || ""}</div>
-                                                    </>)
-                                                }
-                                                <div>
-                                                    <Button style={{ margin: '1rem' }} variant='outline-info' onClick={handleRideAction("accepted")}>Accept Ride</Button>
-                                                    <Button style={{ margin: '1rem' }} variant='outline-info' onClick={handleRideAction("rejected")}>Reject Ride</Button>
-                                                </div>
-                                            </Row>
-                                        </Container>
-                                    })}
+                                <Col>
+                                    <Row>
+                                        <GoogleMap
+                                            mapContainerStyle={mapContainerStyle}
+                                            zoom={15}
+                                            center={center}
+                                            options={options}
+                                            onLoad={onMapLoad}>
+                                            {
+                                                (rideRouteResp == null || rideRouteResp.reload) && (
+                                                    <DirectionsService
+                                                        // required
+                                                        options={{
+                                                            destination: rideTrip.destination,
+                                                            origin: rideTrip.source,
+                                                            travelMode: 'DRIVING',
+                                                            waypoints: getWaypoints(rideTrip),
+                                                            optimizeWaypoints: true,
+                                                        }}
+                                                        callback={rideDirectionsCallback}
+                                                    />
+                                                )
+                                            }
+                                            {
+                                                (rideRouteResp !== null && !rideRouteResp.reload) && (
+                                                    <DirectionsRenderer
+                                                        // required
+                                                        options={{
+                                                            directions: rideRouteResp.rideData
+                                                        }}
+                                                    />
+                                                )
+                                            }
+                                        </GoogleMap>
+                                    </Row>
+                                    <Row>
+                                        {rider.map(r => {
+                                            return <Container fluid="lg">
+                                                <Row>
+                                                    {
+                                                        typeof (calculationData) != "undefined" && calculationData != null && calculationData != {} &&
+                                                        (<>
+                                                            <div><b>Pickup Location:</b> {calculationData.pickUpLocation || ""}</div>
+                                                            <div><b>Drop off Location:</b> {calculationData.dropOffLocation || ""}</div>
+                                                            <div><b>Total Ride Distance:</b> {calculationData ? (calculationData.newDistance / 1000).toFixed(3) + " km" || "" : ""}</div>
+                                                            <div><b>Total Ride Duration:</b> {calculationData.newDuration ? (calculationData.newDurationMin + " minutes " + calculationData.newDurationSec + " seconds" || "") : ""}</div>
+                                                            <div><b>Base Fare:</b> {"$" + calculationData.fare?.toFixed(2) || ""}</div>
+                                                            <div><b>Additional Fare:</b> {"$" + calculationData.addFare?.toFixed(2) || ""}</div>
+                                                        </>)
+                                                    }
+                                                    <div>
+                                                        <Button style={{ margin: '1rem' }} variant='outline-info' onClick={handleRideAction("accepted")}>Accept Ride</Button>
+                                                        <Button style={{ margin: '1rem' }} variant='outline-info' onClick={handleRideAction("rejected")}>Reject Ride</Button>
+                                                    </div>
+                                                </Row>
+                                            </Container>
+                                        })}
+                                    </Row>
                                 </Col>
                             </Row>
                         </Container>

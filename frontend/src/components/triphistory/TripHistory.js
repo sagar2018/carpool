@@ -1,6 +1,4 @@
 import { React, useEffect, useState } from 'react';
-import { Row, Col } from 'react-bootstrap'
-import * as GrIcons from 'react-icons/gr'
 import sourceImg from '../../start-location.svg';
 import destinationImg from '../../pin-location.svg';
 import dtImg from '../../date-and-time.svg';
@@ -72,7 +70,7 @@ export default function TripHistory() {
             <div className='detail-container'>
                 <div className='detail-row'>
                     <img className='tripImage' src={sourceImg}></img>
-                    <h6 className='detail-heading'>Source: </h6>
+                    <h6 className='detail-heading'>Start: </h6>
                     <h6 className='detail-heading'>{source}</h6>
                 </div>
             </div>

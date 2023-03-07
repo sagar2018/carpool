@@ -12,7 +12,7 @@ import { Navigate } from 'react-router-dom';
 Geocode.setApiKey("AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM");
 
 const mapContainerStyle = {
-    height: "60vh",
+    height: "45vh",
     width: "100%",
 };
 const options = {
@@ -20,8 +20,8 @@ const options = {
     zoomControl: true,
 };
 const center = {
-    lat: 43.473078230478336,
-    lng: -80.54225947407059,
+    lat: 50.44522126067261,
+    lng: -104.61894259252107,
 };
 
 export default function Drive({ setToken, setActiveTrip }) {
@@ -47,7 +47,7 @@ export default function Drive({ setToken, setActiveTrip }) {
 
     const openMapModal = (mapType) => {
         setMapType(mapType);
-        setModalTitle(mapType === 'src' ? 'Source point' : 'Destination point');
+        setModalTitle(mapType === 'src' ? 'Start' : 'Destination');
         setShowModal(true);
     }
 
@@ -155,11 +155,11 @@ export default function Drive({ setToken, setActiveTrip }) {
                         <Form>
                             <Form.Group as={Row} className="mb-3" controlId="src">
                                 <Col xs="9">
-                                    <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? srcName : null} />
+                                    <Form.Control readOnly defaultValue="Starting position not selected" value={mapCoords['src'] ? srcName : null} />
                                 </Col>
                                 <Col xs="3">
                                     <Button variant="info" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
-                                        Source
+                                        Start
                                     </Button>
                                 </Col>
                             </Form.Group>

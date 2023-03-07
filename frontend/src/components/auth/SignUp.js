@@ -43,10 +43,14 @@ export default function SignUp({ setToken }) {
       password,
       confirmpassword
     }
-    const sessionUserDetails = await signupUser(data);
-    if (sessionUserDetails && sessionUserDetails.token) {
-      setToken({ token: sessionUserDetails.token, name: sessionUserDetails.user.name });
-      window.location.reload();
+    if (email.endsWith("@uregina.ca")) {
+      const sessionUserDetails = await signupUser(data);
+      if (sessionUserDetails && sessionUserDetails.token) {
+        setToken({ token: sessionUserDetails.token, name: sessionUserDetails.user.name });
+        window.location.reload();
+      }
+    } else {
+      alert("Please enter university email.")
     }
   }
 

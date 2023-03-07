@@ -400,6 +400,7 @@ exports.requestRide = (req, res) => {
             trip: req.body.trip,
             pickUpPoints: [...tripData.waypoints, req.body.src, req.body.dst],
             riderName: req.body.riderName,
+            driverName: req.body.driverName,
             pickUpTime: req.body.pickUpTime ? new Date(req.body.pickUpTime) : null
         });
         tripRequestObj.save((err, tripRequest) => {
@@ -469,25 +470,20 @@ exports.updateRequest = (req, res) => {
         tripRequest.state = req.body.action
         tripRequest.save((err, tr) => {
             Trip.findById(req.body.trip, (err, trip) => {
-                // if (trip == null || trip.available_riders <= 0) {
-                //     return res.status(200).json({ "msg": "Trip is filled" })
-                // }
-                // if (trip.dateTime > new Date()) {
-                //     return res.status(200).json({ "msg": "Trip is completed" })
-                // }
-                // if (action == "accepted") {
-                //     trip.riders = [...trip.riders, tripRequest.rider]
-                //     trip.waypoints = [tripRequest.source, tripRequest.destination, trip.source, trip.destination]
-                // } else {
-                //     var index = trip.riders.indexOf(tripRequest.rider)
-                //     if (index > -1) {
-                //         trip.riders = trip.riders.splice(index, 1)
-                //     }
-                // }
-                // trip.save((err, trip) => {
-                //     var msg = (action == "accepted") ? "Trip Accepted successfully" : "Trip Rejected successfully"
-                //     return res.status(200).json({ msg })
-                // })
+                if (trip == null || trip.available_riders <= 0) {
+                    return res.status(200).json({ "msg": "Trip is filled" })
+                }
+                if (trip.dateTime < new Date()) {
+                    return res.status(200).json({ "msg": "Trip is completed" })
+                }
+                if (action == "accepted") {
+                    trip.riders = [...trip.riders, tripRequest.rider]
+                    trip.waypoints = [...trip.waypoints, tripRequest.source, tripRequest.destination]
+                    trip.save((err, trip) => {
+                        var msg = (action == "accepted") ? "Trip Accepted successfully" : "Trip Rejected successfully"
+                        return res.status(200).json({ msg })
+                    })
+                }
             })
             var msg = (action == "accepted") ? "Trip Accepted" : "Trip Rejected"
             return res.status(200).json({ msg })
