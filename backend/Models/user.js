@@ -28,6 +28,22 @@ const userSchema = new schema({
         type: Number,
         trim: true,
     },
+    VehicleName:{
+        type: String,
+        require: false
+    }, VehicleMake:{
+        type: String,
+        require: false
+    }, VehicleModel:{
+        type: String,
+        require: false
+    }, VehicleSeats:{
+        type: String,
+        require: false
+    }, VehicleYear:{
+        type: String,
+        require: false
+    },
     encry_password: {
         type: String,
         require: true,

@@ -17,6 +17,18 @@ exports.userDetails = (req, res) => {
             res.status(500).end();
         return res.status(200).json({user});
     })
+    
 }
+
+exports.updateUserDetailsVehicles = (req,res) => {
+    User.findByIdAndUpdate(req.query.userId,req.body)
+    .then((data)=>{
+        res.send("Updated successfully")
+    })
+    .catch((err)=>{
+        res.send("Error:"+err)
+    })
+}
+
 
 //export {allusersRoutes}
