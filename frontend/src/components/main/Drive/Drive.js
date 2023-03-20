@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
 import { Navigate } from 'react-router-dom';
 
+
 Geocode.setApiKey("AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM");
 
 const mapContainerStyle = {

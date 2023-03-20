@@ -10,6 +10,7 @@ export default function Login({ setToken, setActiveTrip }) {
     const [password, setPassword] = useState("");
 
     function loginUser(credentials) {
+       // console.log(credentials);
         return fetch("http://18.224.165.108:8080/api" + '/signin', {
             method: 'POST',
             headers: {
@@ -18,7 +19,7 @@ export default function Login({ setToken, setActiveTrip }) {
             body: JSON.stringify(credentials)
         })
             .then((response) => {
-                console.log(response);
+                //console.log(response.user);
                 if (response.ok) {
                     return response.json();
                 }
@@ -39,12 +40,13 @@ export default function Login({ setToken, setActiveTrip }) {
             password
         }
         const sessionUserDetails = await loginUser(data);
+        localStorage.setItem('id',sessionUserDetails.user._id);
         if (sessionUserDetails) {
             if (sessionUserDetails.user.active_trip)
                 setActiveTrip(sessionUserDetails.user.active_trip);
             if (sessionUserDetails.token)
                 setToken({ token: sessionUserDetails.token, name: sessionUserDetails.user.name });
-            window.location.reload();
+            //window.location.reload();
         }
     }
 
