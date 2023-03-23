@@ -11,7 +11,7 @@ export default function Login({ setToken, setActiveTrip }) {
 
     function loginUser(credentials) {
        // console.log(credentials);
-        return fetch("http://18.224.165.108:8080/api" + '/signin', {
+        return fetch("http://3.15.153.157:8090/api" + '/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

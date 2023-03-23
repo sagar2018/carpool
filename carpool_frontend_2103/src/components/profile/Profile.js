@@ -28,7 +28,7 @@ export default function Profile() {
     console.log(id);
 
     useEffect(()=>{
-        axios.get('http://18.224.165.108:8080/api/user/details?userId='+id).then((res)=>{
+        axios.get('http://3.15.153.157:8090/api/user/details?userId='+id).then((res)=>{
             console.log(res)
             setUser(res.data.user);
             if(res.data.user.VehicleName!=null){
@@ -48,7 +48,7 @@ export default function Profile() {
             VehicleYear:vyear
         }
 
-        axios.post('http://18.224.165.108:8080/api/user/updatedetails',updateuser).then((result)=>{
+        axios.post('http://3.15.153.157:8090/api/user/updatedetails',updateuser).then((result)=>{
             if(result.status==200){
                 alert('Details updates successfully');
                 setIsVehicle(true);

@@ -19,7 +19,7 @@ export default function Profile() {
     const [user,setUser] = useState({});
     var id = localStorage.getItem("id");
     console.log(id);
-    axios.get('http://18.224.165.108:8080/api/user/details?userId='+id).then((res)=>{
+    axios.get('http://3.15.153.157:8090/api/user/details?userId='+id).then((res)=>{
         console.log(res)
         setUser(res.data.user);
         console.log(res.data.user.name)

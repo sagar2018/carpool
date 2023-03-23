@@ -114,7 +114,7 @@ export default function Drive({ setToken, setActiveTrip }) {
             max_riders: riders
         }
         console.log(data);
-        return fetch("http://18.224.165.108:8080/api" + '/trip/drive', {
+        return fetch("http://3.15.153.157:8090/api" + '/trip/drive', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

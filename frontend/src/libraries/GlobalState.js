@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 
 const initialState = {
   // mapsKey: "AIzaSyCCZcb_AEAcCRk0uxe-GjAtUU_ewjpDXIM",
-  endPoint: "http://18.224.165.108:8080/api"
+  endPoint: "http://3.15.153.157:8090/api"
 }
 
 export const GlobalContext = createContext();

@@ -13,7 +13,7 @@ export default function SignUp({ setToken }) {
   const [confirmpassword, setconfirmPassword] = useState("");
 
   function signupUser(userDetails) {
-    return fetch("http://18.224.165.108:8080/api" + '/signup', {
+    return fetch("http://3.15.153.157:8090/api" + '/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
