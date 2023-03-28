@@ -87,7 +87,7 @@ export default function ActiveTrip({ setActiveTrip }) {
 
     // Enable 'Done' button only in driver mode 
     useEffect(() => {
-        fetch("http://localhost:8000" + '/trip/isdriver', {
+        fetch("httpss://18.221.134.12:8090" + '/trip/isdriver', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export default function ActiveTrip({ setActiveTrip }) {
     const handleCancel = (e) => {
         e.preventDefault();
 
-        return fetch("http://localhost:8000" + '/trip', {
+        return fetch("httpss://localhost:8000" + '/trip', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -134,14 +134,13 @@ export default function ActiveTrip({ setActiveTrip }) {
     const handleDone = (e) => {
         e.preventDefault();
 
-        return fetch("http://localhost:8000" + '/trip/done', {
+        return fetch("https://localhost:8000" + '/trip/done', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Coookie': Cookies.get('tokken')
             },
         }).then((response) => {
-            console.log(response)
             if (response.ok) {
                 setActiveTrip(null);
                 alert("Trip marked completed");
@@ -163,7 +162,7 @@ export default function ActiveTrip({ setActiveTrip }) {
     const [riders, setriders] = useState("")
 
     useEffect(() => {
-        fetch("http://localhost:8000" + '/trip/activetrip', {
+        fetch("https://localhost:8000" + '/trip/activetrip', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -174,7 +173,6 @@ export default function ActiveTrip({ setActiveTrip }) {
                 return response.json();
             }
         }).then((responseJson) => {
-            console.log(responseJson)
             setWaypointsFn(responseJson.waypoints)
             setdatetime(getDateandTime(responseJson.dateTime))
             setdriver(responseJson.driver)
@@ -195,7 +193,6 @@ export default function ActiveTrip({ setActiveTrip }) {
             mapCoords['src'] = responseJson.source
             mapCoords['dst'] = responseJson.destination
             setMapCoords(mapCoords)
-            console.log(mapCoords)
 
         }).catch((error) => {
             alert(error);

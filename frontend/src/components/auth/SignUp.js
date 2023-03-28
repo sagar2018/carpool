@@ -11,9 +11,10 @@ export default function SignUp({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setconfirmPassword] = useState("");
+  const [phone_number,setPhoneNumber]=useState();
 
   function signupUser(userDetails) {
-    return fetch("http://18.224.165.108:8080/api" + '/signup', {
+    return fetch("https://18.221.134.12:8090/api" + '/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -21,13 +22,13 @@ export default function SignUp({ setToken }) {
       body: JSON.stringify(userDetails)
     })
       .then((response) => {
-        console.log(response);
         if (response.ok) {
           return response.json();
         }
         throw new Error(response.statusText);
       })
       .then((responseJson) => {
+        localStorage.setItem('id',responseJson.user._id)
         return responseJson;
       })
       .catch((error) => {
@@ -41,7 +42,8 @@ export default function SignUp({ setToken }) {
       lastname,
       email,
       password,
-      confirmpassword
+      confirmpassword,
+      phone_number
     }
     if (email.endsWith("@uregina.ca")) {
       const sessionUserDetails = await signupUser(data);
@@ -98,6 +100,7 @@ export default function SignUp({ setToken }) {
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
+          
           <Form.Group size="lg" controlId="password">
             <Form.Label>Password</Form.Label>
             <Form.Control
@@ -118,6 +121,7 @@ export default function SignUp({ setToken }) {
               onChange={(e) => setconfirmPassword(e.target.value)}
             />
           </Form.Group>
+          
           <Button size="lg" type="submit" disabled={!validateForm()} className="signup-button" data-test="signup-button">
             Sign Up
           </Button>

@@ -149,7 +149,6 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
                     }
                     var newDurationMin = parseInt(newDuration / 60)
                     var newDurationSec = (newDuration % 60).toFixed(0)
-                    console.log({ pickUpLocation, dropOffLocation, pickUpLocation, newDistance, newDuration, fare, addFare })
                     setCalculationData({ pickUpLocation, dropOffLocation, pickUpLocation, newDistance, newDuration, fare, addFare, newDurationMin, newDurationSec })
                 }
             })
@@ -159,11 +158,11 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
     }
 
     const handleRideClick = (trip) => e => {
-        console.log(`ride`, trip)
+       // console.log(`ride`, trip)
         setRideTrip(trip);
         setRideRouteResp({ ...rideRouteResp, reload: true });
         updateCalculation(trip.source, trip.destination, trip.pickUpPoints[0], trip.pickUpPoints[1], trip)
-        fetch("http://18.224.165.108:8080/api" + '/user/details?userId=' + trip.rider, {
+        fetch("https://18.221.134.12:8090/api" + '/user/details?userId=' + trip.rider, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -186,7 +185,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
     }
 
     const handleRideAction = (action) => e => {
-        fetch("http://18.224.165.108:8080/api" + '/update/request/', {
+        fetch("https://18.221.134.12:8090/api" + '/update/request/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -210,7 +209,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
         });
     }
     const getWaypoints = (trip) => {
-        console.log(`trip`, trip)
+        //console.log(`trip`, trip)
         let waypoints = []
         trip.pickUpPoints.forEach(p => waypoints.push({ location: p, stopover: true }))
         return waypoints;
@@ -218,7 +217,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
 
 
     useEffect(() => {
-        fetch("http://18.224.165.108:8080/api/drive/requests/", {
+        fetch("https://18.221.134.12:8090/api/drive/requests/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -228,7 +227,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
                 state: "pending"
             }),
         }).then((response) => {
-            console.log(`response`, response)
+           // console.log(`response`, response)
             if (response.ok) {
                 return response.json();
             }

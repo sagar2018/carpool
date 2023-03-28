@@ -127,7 +127,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
             completed: false,
             dateTime: dateTime,
         }
-        return fetch("http://18.224.165.108:8080/api" + '/trips/', {
+        return fetch("https://18.221.134.12:8090/api" + '/trips/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
         setRideTrip(trip);
         setRideRouteResp({ ...rideRouteResp, reload: true });
         updateCalculation(trip.source, trip.destination, mapCoords.src, mapCoords.dst, trip)
-        fetch("http://18.224.165.108:8080/api" + '/user/details?userId=' + trip.driver, {
+        fetch("https://18.221.134.12:8090/api" + '/user/details?userId=' + trip.driver, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -216,7 +216,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
 
     const handleRideRequest = (driver) => (e) => {
         console.log(`handleRequestRide`, driver)
-        fetch("http://18.224.165.108:8080/api" + '/trip/request', {
+        fetch("https://18.221.134.12:8090/api" + '/trip/request', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -370,10 +370,19 @@ export default function Ride({ setToken, setActiveTrip, name }) {
                                     <Row className='p-2'>
                                         Select an option for car pooling
                                     </Row>
-                                    {trips.map(trip =>
-                                        <Row fluid className='p-2' key={trip._id}>
-                                            <Button variant='outline-info' onClick={handleRideClick(trip)}>Car Pool with {trip.driverDetails.name + " " + trip.driverDetails.lastname}</Button>
-                                        </Row>
+                                    {trips.map(trip => {
+                                        return (
+                                            <Row fluid className='p-2' key={trip._id}>
+                                                <Button variant='outline-info' onClick={handleRideClick(trip)}>
+                                                    Car Pool with {trip.driverDetails.name + " " + trip.driverDetails.lastname}
+                                                    {/* Car Pool with {trip.driver} */}
+                                                    </Button>
+                                            </Row>
+                                        )
+                                    }
+                                        // <Row fluid className='p-2' key={trip._id}>
+                                        //     <Button variant='outline-info' onClick={handleRideClick(trip)}>Car Pool with {trip.driverDetails.name + " " + trip.driverDetails.lastname}</Button>
+                                        // </Row>
                                     )}
                                 </Col>
                                 <Col md style={{ marginTop: '2rem' }}>
@@ -417,10 +426,12 @@ export default function Ride({ setToken, setActiveTrip, name }) {
                                                         typeof (calculationData) != "undefined" && calculationData != null && calculationData != {} &&
                                                         (<>
                                                             <div><b>Pickup Location:</b> {calculationData.pickUpLocation || ""}</div>
-                                                            <div><b>Estimated Pickup Time:</b> {calculationData.pickUpDateTime?.toString() || ""}</div>
+                                                            <div><b>Estimated Pickup Date:</b> {calculationData.pickUpDateTime?.toLocaleDateString('en-US') || ""}</div>
+                                                            <div><b>Estimated Pickup Time:</b> {calculationData.pickUpDateTime?.getHours()+" : "+calculationData.pickUpDateTime?.getMinutes() || ""}</div>
                                                             <div><b>Drop off Location:</b> {calculationData.dropOffLocation || ""}</div>
-                                                            <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime?.toString() || ""}</div>
-                                                            <div><b>Your Travelling Distance:</b> {(calculationData.distance / 1609) + " miles" || ""}</div>
+                                                            <div><b>Estimated Drop off Date:</b> {calculationData.destinationDateTime?.toLocaleDateString('en-US') || ""}</div>
+                                                            <div><b>Estimated Drop off Time:</b> {calculationData.destinationDateTime?.getHours()+" : "+calculationData.destinationDateTime?.getMinutes() || ""}</div>
+                                                            <div><b>Your Travelling Distance:</b> {(calculationData.distance / 1609).toFixed(2) + " miles" || ""}</div>
                                                         </>)
                                                     }
                                                     <Button style={{ marginTop: '1rem' }} variant='outline-info' onClick={handleRideRequest(r)}>Request Ride</Button>

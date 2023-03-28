@@ -3,19 +3,21 @@ import Cookies from 'js-cookie'
 import * as AiIcons from 'react-icons/ai';
 import * as FaIcons from 'react-icons/fa';
 import * as MdIcons from 'react-icons/md';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IconContext } from 'react-icons';
 import { Button } from 'react-bootstrap';
 import './Navbar.css';
 import { SidebarData } from './SidebarData';
 
+
 export default function Navbar({ setToken, activeTrip, name }) {
     const location = useLocation();
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(!sidebar);
+    const navigate = useNavigate();
 
     function logoutUser() {
-        return fetch("http://18.224.165.108:8080/api" + '/signout', {
+        return fetch("https://18.221.134.12:8090/api" + '/signout', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,14 +36,13 @@ export default function Navbar({ setToken, activeTrip, name }) {
     }
 
     function deleteUser() {
-        return fetch("http://18.224.165.108:8080/api" + '/delete', {
+        return fetch("https://18.224.165.108:8080/api" + '/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + Cookies.get('tokken')
             }
         }).then((res) => {
-            console.log(res)
             setToken(null)
         })
     }
@@ -49,7 +50,6 @@ export default function Navbar({ setToken, activeTrip, name }) {
     const handleDeleteProfile = async e => {
         e.preventDefault();
         const data = await deleteUser();
-        console.log(data);
         window.location.reload();
     }
 
@@ -122,7 +122,7 @@ export default function Navbar({ setToken, activeTrip, name }) {
                         </ul>
                         <ul className='sidebar-bottom-items' onClick={showSidebar}>
                             <li className='nav-text' data-test="logout-button">
-                                <Link to='/' onClick={handleLogOut} > {/*call logout method*/}
+                                <Link to='/login' onClick={handleLogOut} > {/*call logout method*/}
                                     <FaIcons.FaSignOutAlt color='black' />
                                     <span style={{ marginLeft: '1rem' }}>Logout</span>
                                 </Link>

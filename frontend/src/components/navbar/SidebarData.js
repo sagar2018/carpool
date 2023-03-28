@@ -26,9 +26,14 @@ export const SidebarData = [
     path: '/contactus',
     icon: <MdIcons.MdPermPhoneMsg color='black' />,
   },
-  {
-    title: 'Admin Page',
-    path: '/admin',
-    icon: <MdIcons.MdAdminPanelSettings color='black' />,
-  },
 ];
+
+// if(localStorage.getItem('isadmin')===1){
+//   SidebarData.push({
+//     title: 'Admin Page',
+//     path: '/admin',
+//     icon: <MdIcons.MdAdminPanelSettings color='black' />,
+//   },)
+// }
+
+// export default SidebarData;

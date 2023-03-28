@@ -29,7 +29,8 @@
     "start": "react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "custom":"react-scripts build; serve -s build"
   },
   "eslintConfig": {
     "extends": [

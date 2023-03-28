@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     MDBCol,
     MDBContainer,
@@ -8,22 +8,61 @@ import {
     MDBCardBody,
     MDBCardImage,
     MDBInput,
+    MDBBtn,
 } from 'mdb-react-ui-kit';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
 
     const [user,setUser] = useState({});
+    const [isVehicle,setIsVehicle]=useState(false);
+    const [vmake,setvMake]= useState();
+    const [vname,setvName] = useState();
+    const [vseat,setvSeat ] = useState();
+    const[vmodel,setvModel] = useState();
+    const[vyear,setvYear] = useState();
     var id = localStorage.getItem("id");
-    console.log(id);
-    axios.get('http://18.224.165.108:8080/api/user/details?userId='+id).then((res)=>{
-        console.log(res)
-        setUser(res.data.user);
-        console.log(res.data.user.name)
-    })
+    var isadmin = localStorage.getItem('isadmin')==1 ? <MDBBtn><Link className='text-reset fw-bold' to='/admin'>User Details</Link></MDBBtn> : <></>
+
+
+    useEffect(()=>{
+        axios.get('https://18.221.134.12:8090/api/user/details?userId='+id).then((res)=>{
+            setUser(res.data.user);
+            if(res.data.user.VehicleName!=null){
+                setIsVehicle(true);
+            }
+        })
+    },[isVehicle]);
+   
+    function setVehicleDetails(){
+        const updateuser ={
+            userId:id,
+            VehicleName:vname,
+            VehicleMake:vmake,
+            VehicleModel:vmodel,
+            VehicleSeats:vseat,
+            VehicleYear:vyear
+        }
+
+        axios.post('https://18.221.134.12:8090/api/user/updatedetails',updateuser).then((result)=>{
+            if(result.status==200){
+                alert('Details updates successfully');
+                setIsVehicle(true);
+            }
+        }).catch((err)=>alert(err));
+    }
+    
+
+    let vehicleName = isVehicle ? user.VehicleName:<MDBInput id='vehiclename' type='text' value={vname} onChange={(e) => { setvName(e.target.value) }}  />
+    let VehicleMake = isVehicle ? user.VehicleMake:<MDBInput id='vehiclemake' type='text' value={vmake} onChange={(e) => { setvMake(e.target.value) }}/>
+    let VehicleModel = isVehicle ? user.VehicleModel:<MDBInput id='vehiclemodal' type='text' value={vmodel} onChange={(e) => { setvModel(e.target.value) }}/>
+    let VehicleSeats = isVehicle ? user.VehicleSeats:<MDBInput id='vehicleseat' type='text' value={vseat} onChange={(e) => { setvSeat(e.target.value) }}/>
+    let VehicleYear = isVehicle ? user.VehicleYear:<MDBInput id='vehicleyear' type='text' value={vyear} onChange={(e) => { setvYear(e.target.value) }}/>
+
     return (
         <section style={{ backgroundColor: '#eee' }}>
             <MDBContainer className="py-5">
@@ -39,10 +78,10 @@ export default function Profile() {
                                     fluid />
                                 <p className="text-muted mb-1">Full Stack Developer</p>
                                 <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
-                                {/* <div className="d-flex justify-content-center mb-2">
-                                    <MDBBtn>Follow</MDBBtn>
-                                    <MDBBtn outline className="ms-1">Message</MDBBtn>
-                                </div> */}
+                                <div className="d-flex justify-content-center mb-2">
+                                    {isadmin}
+                                    {/* <MDBBtn outline className="ms-1">Message</MDBBtn> */}
+                                </div>
                             </MDBCardBody>
                         </MDBCard>
                     </MDBCol>
@@ -81,7 +120,7 @@ export default function Profile() {
                                         <MDBCardText>Mobile</MDBCardText>
                                     </MDBCol>
                                     <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">(098) 765-4321</MDBCardText>
+                                        <MDBCardText className="text-muted">(079)-123456</MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
                                 <hr />
@@ -104,20 +143,24 @@ export default function Profile() {
                                         <Container>
                                             <Row>
                                                 <Col><MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>Vehicle Name</MDBCardText>
-                                                    <MDBInput id='typeText' type='text' /></Col>
+                                                        {vehicleName}
+                                                    </Col>
                                                 <Col><MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>Vehicle Make</MDBCardText>
-                                                    <MDBInput id='typeText' type='text' /></Col>
+                                                    {VehicleMake}</Col>
                                             </Row>
                                             <Row>
                                                 <Col><MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Vehivle Model</MDBCardText>
-                                                    <MDBInput id='vehiclemodel' type='text' /></Col>
+                                                    {VehicleModel}</Col>
                                                 <Col>
                                                     <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Seats</MDBCardText>
-                                                    <MDBInput id='vehiclemodel' type='text' />
+                                                    {VehicleSeats}
                                                 </Col>
                                                 <Col><MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Vehicle Year</MDBCardText>
-                                                    <MDBInput id='fueltype' type='text' /></Col>
+                                                    {VehicleYear}</Col>
                                             </Row>
+                                        </Container>
+                                        <Container className='text-center p-3'>
+                                        {!isVehicle && <MDBBtn onClick={setVehicleDetails}>Submit Details</MDBBtn>}
                                         </Container>
                                         
                                     </MDBCardBody>

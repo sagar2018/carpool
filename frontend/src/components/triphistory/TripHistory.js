@@ -27,7 +27,7 @@ export default function TripHistory() {
 
     const [tripDetails, setTripDetails] = useState([])
     const fetchData = async () => {
-        const response = await fetch("http://18.224.165.108:8080/api" + '/trip/history', {
+        const response = await fetch("https://18.221.134.12:8090/api" + '/trip/history', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 
-var BASE_URL = 'http://18.224.165.108:8080/';
+var BASE_URL = 'https://18.221.134.12:8090/';
 
 
 export default function Admin() {
@@ -20,11 +20,9 @@ export default function Admin() {
     async function deleteUser(id1) {
         axios.get(BASE_URL+'api/admin/deleteuserbyid',{ params: { id: id1 } }).then((result) => {
           if (result.status === 200) {
-            console.log("deleted successfully");
             setRefresh(true);            
           }
         })
-        console.log(id1);
        
            
       }

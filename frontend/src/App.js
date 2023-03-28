@@ -45,7 +45,7 @@ function App() {
         <Route exact path='/profile' element={token ? <Profile setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
         <Route exact path='/drive' element={token ? <Drive setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
         <Route exact path='/ride' element={token ? <Ride setToken={setToken} setActiveTrip={setActiveTrip} name={name} /> : <Navigate to="/login" />} />
-        {/* <Route exact path='/ride-request' element={token ? <RideRequest setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} /> */}
+        <Route exact path='/ride-request' element={token ? <RideRequest setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
         <Route exact path='/drive-request' element={token ? <DriveRequest setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
         <Route exact path='/trip-history' element={token ? <TripHistory /> : <Navigate to="/login" />} />
         <Route exact path='/contactus' element={token ? <Contactus /> : <Navigate to="/login" />} />
