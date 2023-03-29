@@ -13,7 +13,7 @@ export default function Login({ setToken, setActiveTrip }) {
     const navigate = useNavigate();
 
     function loginUser(credentials) {
-        return fetch("https://18.221.134.12:8090/api" + '/signin', {
+        return fetch("http://18.221.134.12:8080/api" + '/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

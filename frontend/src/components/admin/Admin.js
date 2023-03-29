@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 
-var BASE_URL = 'https://18.221.134.12:8090/';
+var BASE_URL = 'http://18.221.134.12:8080/';
 
 
 export default function Admin() {

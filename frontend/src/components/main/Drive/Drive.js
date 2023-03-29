@@ -113,7 +113,7 @@ export default function Drive({ setToken, setActiveTrip }) {
             dateTime: dateTime,
             max_riders: riders
         }
-        return fetch("https://18.221.134.12:8090/api" + '/trip/drive', {
+        return fetch("http://18.221.134.12:8080/api" + '/trip/drive', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

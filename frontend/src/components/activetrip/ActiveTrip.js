@@ -87,7 +87,7 @@ export default function ActiveTrip({ setActiveTrip }) {
 
     // Enable 'Done' button only in driver mode 
     useEffect(() => {
-        fetch("httpss://18.221.134.12:8090" + '/trip/isdriver', {
+        fetch("http://18.221.134.12:8080" + '/trip/isdriver', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export default function ActiveTrip({ setActiveTrip }) {
     const handleCancel = (e) => {
         e.preventDefault();
 
-        return fetch("httpss://localhost:8000" + '/trip', {
+        return fetch("http://18.221.134.12:8080" + '/trip', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ export default function ActiveTrip({ setActiveTrip }) {
     const handleDone = (e) => {
         e.preventDefault();
 
-        return fetch("https://localhost:8000" + '/trip/done', {
+        return fetch("http://18.221.134.12:8080" + '/trip/done', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ export default function ActiveTrip({ setActiveTrip }) {
     const [riders, setriders] = useState("")
 
     useEffect(() => {
-        fetch("https://localhost:8000" + '/trip/activetrip', {
+        fetch("http://18.221.134.12:8080" + '/trip/activetrip', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

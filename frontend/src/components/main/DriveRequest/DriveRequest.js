@@ -162,7 +162,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
         setRideTrip(trip);
         setRideRouteResp({ ...rideRouteResp, reload: true });
         updateCalculation(trip.source, trip.destination, trip.pickUpPoints[0], trip.pickUpPoints[1], trip)
-        fetch("https://18.221.134.12:8090/api" + '/user/details?userId=' + trip.rider, {
+        fetch("http://18.221.134.12:8080/api" + '/user/details?userId=' + trip.rider, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -185,7 +185,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
     }
 
     const handleRideAction = (action) => e => {
-        fetch("https://18.221.134.12:8090/api" + '/update/request/', {
+        fetch("http://18.221.134.12:8080/api" + '/update/request/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ export default function DriveRequest({ setToken, setActiveTrip }) {
 
 
     useEffect(() => {
-        fetch("https://18.221.134.12:8090/api/drive/requests/", {
+        fetch("http://18.221.134.12:8080/api/drive/requests/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

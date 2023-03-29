@@ -84,6 +84,10 @@ export default function Ride({ setToken, setActiveTrip, name }) {
         );
     }
 
+    function driverCheck(trip){
+        return trip.driverDetails!=null;
+    }
+
     const handleCallback = (closeButtonClicked, mapType, mapData) => {
         setShowModal(false);
         if (closeButtonClicked) return;
@@ -127,7 +131,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
             completed: false,
             dateTime: dateTime,
         }
-        return fetch("https://18.221.134.12:8090/api" + '/trips/', {
+        return fetch("http://18.221.134.12:8080/api" + '/trips/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -144,9 +148,11 @@ export default function Ride({ setToken, setActiveTrip, name }) {
                 throw new Error(response.statusText);
             })
             .then((responseJson) => {
-                setTrips(responseJson.trips);
+                console.log(responseJson.trips)
+                setTrips(responseJson.trips.filter(driverCheck));
                 setRideTrip(responseJson.trips ? responseJson.trips[0] : {});
                 setFinding(false);
+                console.log(trips)
             })
             .catch((error) => {
                 console.log(error);
@@ -192,7 +198,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
         setRideTrip(trip);
         setRideRouteResp({ ...rideRouteResp, reload: true });
         updateCalculation(trip.source, trip.destination, mapCoords.src, mapCoords.dst, trip)
-        fetch("https://18.221.134.12:8090/api" + '/user/details?userId=' + trip.driver, {
+        fetch("http://18.221.134.12:8080/api" + '/user/details?userId=' + trip.driver, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -206,6 +212,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
                 setToken(null);
             throw new Error(response.statusText);
         }).then((responseJson) => {
+            console.log(trip)
             setDriver([responseJson.user]);
         }).catch((error) => {
             console.log(error);
@@ -216,7 +223,7 @@ export default function Ride({ setToken, setActiveTrip, name }) {
 
     const handleRideRequest = (driver) => (e) => {
         console.log(`handleRequestRide`, driver)
-        fetch("https://18.221.134.12:8090/api" + '/trip/request', {
+        fetch("http://18.221.134.12:8080/api" + '/trip/request', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ export default function SignUp({ setToken }) {
   const [phone_number,setPhoneNumber]=useState();
 
   function signupUser(userDetails) {
-    return fetch("https://18.221.134.12:8090/api" + '/signup', {
+    return fetch("http://18.221.134.12:8080/api" + '/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
