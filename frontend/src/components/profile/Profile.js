@@ -76,8 +76,8 @@ export default function Profile() {
                                     className="rounded-circle"
                                     style={{ width: '150px' }}
                                     fluid />
-                                <p className="text-muted mb-1">Full Stack Developer</p>
-                                <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                                <p className="text-muted mb-1">User</p>
+                                <p className="text-muted mb-4">Regina, SK</p>
                                 <div className="d-flex justify-content-center mb-2">
                                     {isadmin}
                                     {/* <MDBBtn outline className="ms-1">Message</MDBBtn> */}
@@ -120,7 +120,7 @@ export default function Profile() {
                                         <MDBCardText>Mobile</MDBCardText>
                                     </MDBCol>
                                     <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">(079)-123456</MDBCardText>
+                                        <MDBCardText className="text-muted">(639) 555-5672</MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
                                 <hr />
@@ -129,7 +129,7 @@ export default function Profile() {
                                         <MDBCardText>Address</MDBCardText>
                                     </MDBCol>
                                     <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">Bay Area, San Francisco, CA</MDBCardText>
+                                        <MDBCardText className="text-muted">Regina, SK</MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
                             </MDBCardBody>
@@ -149,7 +149,7 @@ export default function Profile() {
                                                     {VehicleMake}</Col>
                                             </Row>
                                             <Row>
-                                                <Col><MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Vehivle Model</MDBCardText>
+                                                <Col><MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Vehicle Model</MDBCardText>
                                                     {VehicleModel}</Col>
                                                 <Col>
                                                     <MDBCardText className="mt-4 mb-1" style={{ fontSize: '.77rem' }}>Seats</MDBCardText>

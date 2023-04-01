@@ -20,6 +20,7 @@ import Profile from './components/profile/Profile';
 import Footer from './components/footer/Footer';
 import Contactus from './components/contactus/Contactus';
 import Admin from './components/admin/Admin';
+import AboutUs from './components/aboutus/AboutUs';
 
 const libraries = ['places'];
 
@@ -48,6 +49,7 @@ function App() {
         <Route exact path='/ride-request' element={token ? <RideRequest setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
         <Route exact path='/drive-request' element={token ? <DriveRequest setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />} />
         <Route exact path='/trip-history' element={token ? <TripHistory /> : <Navigate to="/login" />} />
+        <Route exact path='/aboutus' element={token ? <AboutUs /> : <Navigate to="/login" />} />
         <Route exact path='/contactus' element={token ? <Contactus /> : <Navigate to="/login" />} />
         <Route exact path='/admin' element={token ? <Admin /> : <Navigate to="/login" />} />
         <Route path='*' element={<NotFound />} />

@@ -55,8 +55,8 @@ export default function Admin() {
                                 </div>
                             </td>
                             <td>
-                                <p className='fw-normal mb-1'>Vehicle Name</p>
-                                <p className='text-muted mb-0'>Manufacturer</p>
+                                <p className='fw-normal mb-1'>{user.VehicleName!=null?user.VehicleName : "Swift"}</p>
+                                <p className='text-muted mb-0'>{user.VehicleMake!=null?user.VehicleMake : "Maruti"}</p>
                             </td>
                             <td>
                                 <MDBBadge color='success' pill>

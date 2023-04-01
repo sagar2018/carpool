@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import './Login.css';
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
-import image from '../../bg.png';
+import image from '../../Background.png';
 
 export default function Login({ setToken, setActiveTrip }) {
 
@@ -71,7 +71,7 @@ export default function Login({ setToken, setActiveTrip }) {
                     <Container className="pt-5" style={{fontSize:"1.6em",fontWeight:"bold"}}>
                         
                         <Col xs={7}>
-                    "Join the sustainable way of commuting with our carpooling community. Save money, reduce emissions, and make new connections on the road."
+                    {/* "Join the sustainable way of commuting with our carpooling community. Save money, reduce emissions, and make new connections on the road." */}
                     </Col>
                     
                     </Container>

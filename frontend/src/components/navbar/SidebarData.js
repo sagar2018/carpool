@@ -3,6 +3,7 @@ import React from 'react';
 import * as AiIcons from 'react-icons/ai';
 import * as BsIcons from 'react-icons/bs';
 import * as MdIcons from 'react-icons/md';
+import * as FcIcons from 'react-icons/fc';
 
 
 export const SidebarData = [
@@ -20,6 +21,11 @@ export const SidebarData = [
     title: 'Trip History',
     path: '/trip-history',
     icon: <BsIcons.BsCardChecklist color='black' />,
+  },
+  {
+    title: 'About Us',
+    path: '/aboutus',
+    icon: <FcIcons.FcAbout color='black' />,
   },
   {
     title: 'Contact Us',

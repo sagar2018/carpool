@@ -116,7 +116,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
 
     const handleRideClick = (ride) => e => {
         setRide(ride)
-        fetch("http://18.224.165.108:8080/api" + '/user/details?userId=' + ride.rider, {
+        fetch("http://18.221.134.12:8080/api" + '/user/details?userId=' + ride.rider, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export default function RideRequest({ setToken, setActiveTrip }) {
                 throw new Error(response.statusText);
             })
             .then((responseJson) => {
-                console.log(`responseJson`, responseJson);
+                console.log(`responseJson`, responseJson.user);
                 setDriver([responseJson.user]);
             })
             .catch((error) => {
